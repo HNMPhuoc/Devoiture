@@ -1,0 +1,36 @@
+﻿@{
+    ViewData["Title"] = "Quyền truy cập bị từ chối";
+}
+
+@await Html.PartialAsync("_PageHeader")
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card mt-5">
+                <div class="card-header">Quyền truy cập bị từ chối</div>
+
+                <div class="card-body">
+                    <h1 class="alert alert-danger">Tài khoản của bạn không có quyền truy cập trang web này. Vui lòng quay lại trang chủ</h1>
+                    <div class="text-center mt-3">
+                        @if (User.Identity.IsAuthenticated && Context.Session.GetInt32("AccountRole") != null)
+                        {
+                            var idQuyen = Context.Session.GetInt32("AccountRole").Value;
+                            if (idQuyen == 1 || idQuyen == 2)
+                            {
+                                <a class="btn btn-primary" href="@Url.Action("Index", "TrangchuAdmin", new { area = "Admin" })">Quay lại trang quản trị</a>
+                            }
+                            else
+                            {
+                                <a class="btn btn-primary" href="@Url.Action("Index", "Home")">Quay lại trang chủ</a>
+                            }
+                        }
+                        else
+                        {
+                            <a class="btn btn-primary" href="@Url.Action("Index", "Home")">Quay lại trang chủ</a>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

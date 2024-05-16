@@ -1,0 +1,104 @@
+﻿@model Devoiture.ViewModel.ProfileKH_VM
+
+@{
+    ViewData["Title"] = "Chỉnh sửa thông tin cá nhân";
+}
+
+@await Html.PartialAsync("_PageHeader")
+
+<h4>Khách hàng @Context.User.Identity.Name</h4>
+<hr />
+<!-- Profile KH Start -->
+<div class="container-fluid py-5">
+    <div class="container pt-5 pb-3">
+        <div class="col-lg-10 mb-2 mx-auto">
+            <form asp-action="Editprofile" asp-controller="Khachhang" method="post" enctype="multipart/form-data">
+                <div class="col-lg-10 mb-2">
+                    <div class="contact-form bg-light mb-4 p-4">
+                        <div class="form-group">
+                            <label class="col-sm-3 col-form-label">Email</label>
+                            <div class="col-sm-9">
+                                <input readonly type="text" class="form-control" asp-for="@Model.Email">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 col-form-label">Username</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" asp-for="@Model.Username">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 col-form-label">Họ và tên</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" asp-for="@Model.HoTen">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 col-form-label">Số điện thoại</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" asp-for="@Model.Sdt">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 col-form-label">Ngày sinh</label>
+                            <div class="col-sm-9">
+                                <div class="date mb-3" id="date1" data-target-input="nearest">
+                                    <input asp-for="@Model.Ngsinh" type="text" class="form-control p-4 datetimepicker-input"
+                                           data-target="#date1" data-toggle="datetimepicker" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="mr-3">Giới tính:</label>
+                            <div class="form-check form-check-inline">
+                                <input asp-for="@Model.Gioitinh" type="radio" class="form-check-input" value="true">
+                                <label class="form-check-label" for="namradio">Nam</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input asp-for="@Model.Gioitinh" type="radio" class="form-check-input" value="false">
+                                <label class="form-check-label" for="nuradio">Nữ</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 col-form-label">Số CCCD</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" asp-for="@Model.SoCccd" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 col-form-label">Hình ảnh CCCD</label>
+                            <div class="col-sm-9">
+                                <input type="file" class="form-control" name="Hinh2" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 col-form-label">Số GPLX A4</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" asp-for="@Model.SoGplxA4" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 col-form-label">Hình ảnh GPLX</label>
+                            <div class="col-sm-9">
+                                <input type="file" class="form-control" name="Hinh3" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-form-label">Hình đại diện</label>
+                            <div class="col-sm-9">
+                                <input type="file" class="form-control" name="Hinh1" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12 text-center">
+                    <button asp-action="Editprofile" class="btn btn-primary px-5" type="submit">
+                        Lưu
+                    </button>
+                    <button type="submit" class="btn btn-primary px-5" asp-action="Index" asp-controller="Home">Quay về trang chủ</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Profile KH End -->

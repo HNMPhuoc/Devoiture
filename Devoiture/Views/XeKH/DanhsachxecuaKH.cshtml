@@ -1,0 +1,54 @@
+﻿@model IEnumerable<Devoiture.ViewModel.DanhsachxeKH_VM>
+
+@{
+    ViewData["Title"] = "Danh sách xe của " + Context.Session.GetString("AccountName");
+}
+
+@await Html.PartialAsync("_PageHeader")
+
+<div class="container-fluid py-5">
+    <p>
+        <a asp-action="ThemXe">Thêm Xe Mới</a>
+    </p>
+    <div class="container pt-5 pb-3">
+        <div class="row">
+            @foreach (var item in Model)
+            {
+                <div class="col-lg-4 col-md-6 mb-2">
+                    <div class="rent-item mb-4">
+                        @if (item.TrangthaiDuyet)
+                        {
+                            <div class="alert alert-success" role="alert">
+                                Đã được duyệt
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="alert alert-warning" role="alert">
+                                Đang chờ duyệt
+                            </div>
+                        }
+                        <img class="img-fluid mb-4" src="~/images/Xe/@item.Hinhanh" alt="@item.TenXe">
+                        <h4 class="text-uppercase mb-4">@item.TenXe</h4>
+                        <div class="d-flex justify-content-center mb-4">
+                            <div class="px-2">
+                                <i class="fa fa-car text-primary mr-1"></i>
+                                <span>@item.NamSx</span>
+                            </div>
+                            <div class="px-2 border-left border-right">
+                                <i class="fa fa-cogs text-primary mr-1"></i>
+                                <span>@item.Tenloai</span>
+                            </div>
+                            <div class="px-2">
+                                <i class="fa fa-road text-primary mr-1"></i>
+                                <span>@item.Muctieuthunhienlieu l/100km</span>
+                            </div>
+                        </div>
+                        <a class="btn btn-primary px-3" asp-action="SuaXe" asp-route-biensx="@item.Biensoxe">Chi tiết xe</a>
+                        <a class="btn btn-danger px-3" asp-action="XoaXe" asp-route-biensx="@item.Biensoxe">Thu hồi xe</a>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

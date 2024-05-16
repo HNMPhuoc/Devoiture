@@ -1,0 +1,60 @@
+﻿<!-- Navbar Start -->
+<div class="container-fluid position-relative nav-bar p-0">
+    <div class="position-relative px-lg-5" style="z-index: 9;">
+        <nav class="navbar navbar-expand-lg bg-secondary navbar-dark py-3 py-lg-0 pl-3 pl-lg-5">
+            <a asp-action="Index" asp-controller="Home" class="navbar-brand">
+                <img class="navbar-logo" src="~/images/logo.png" alt="Devoiture" title="Devoiture-Trang web thuê xe oto Đồng Nai" style="border-radius:10px" />
+            </a>
+            <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-between px-3" id="navbarCollapse">
+                <div class="navbar-nav ml-auto py-0">
+                    <a asp-action="Index" asp-controller="Home" class="nav-item nav-link active">Home</a>
+                    <a asp-action="About" asp-controller="Home" class="nav-item nav-link">About</a>
+                    @if (Context.Session.GetString("AccountID") == null)
+                    {
+                        <div class="nav-item dropdown">
+                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
+                                Login
+                            </a>
+                            <div class="dropdown-menu rounded-0 m-0">
+                                <a asp-action="Dangnhap" asp-controller="Khachhang" class="dropdown-item">Đăng nhập</a>
+                                <a asp-action="Dangky" asp-controller="Khachhang" class="dropdown-item">Đăng kí</a>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <a asp-action="DanhsachxecuaKH" asp-controller="XeKH" class="nav-item nav-link">Car hire</a>
+                        <div class="nav-item dropdown">
+                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
+                                @if (string.IsNullOrEmpty(Context.Session.GetString("AccountAvatar")))
+                                {
+                                    <img class="rounded-circle" src="~/images/AnhDaiDien/userdefault.png" alt="" style="width: 40px; height: 40px;">
+
+                                    @Context.Session.GetString("AccountName")
+                                }
+                                else
+                                {
+                                    <img class="rounded-circle" src="~/images/AnhDaiDien/@Context.Session.GetString("AccountAvatar")" alt="" style="width: 40px; height: 40px;">
+
+                                    @Context.Session.GetString("AccountName")
+                                }
+                            </a>
+                            <div class="dropdown-menu rounded-0 m-0">
+                                <a asp-action="ProfileKH" asp-controller="Khachhang" class="dropdown-item">Profile</a>
+                                <a asp-action="Dangxuat" asp-controller="Khachhang" class="dropdown-item">
+                                    <ion-icon name="log-in"></ion-icon>Logout
+                                </a>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </nav>
+    </div>
+</div>
+<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+<!-- Navbar End -->

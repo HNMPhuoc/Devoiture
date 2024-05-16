@@ -1,0 +1,28 @@
+﻿@model Devoiture.ViewModel.XoaxeVM
+@{
+    ViewData["Title"] = "Thu hồi xe";
+}
+@await Html.PartialAsync("_PageHeader")
+
+<div class="container-fluid py-5">
+    <div class="container pt-5 pb-3">
+        <h1 class="display-4 text-uppercase text-center mb-5">Bạn có chắc muốn gỡ thông tin cho thuê xe không?</h1>
+        <div class="row justify-content-center">
+            <div class="col-lg-8 mb-2 mx-auto">
+                <div class="contact-form bg-light mb-4" style="padding: 30px;">
+                    <form asp-action="XoaXe" asp-controller="XeKH" method="post" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <input type="hidden" asp-for="Biensoxe" />
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" value="Thu hồi xe" class="btn btn-danger" />
+                        </div>
+                        <div class="form-group">
+                            <a asp-action="DanhsachxecuaKH" asp-controller="XeKH">Back to List</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

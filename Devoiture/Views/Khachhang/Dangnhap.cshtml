@@ -1,0 +1,33 @@
+﻿@model Devoiture.ViewModel.DangnhapKH_VM
+@{
+    ViewData["Title"] = "Đăng nhập vào hệ thống";
+}
+@await Html.PartialAsync("_PageHeader")
+
+<!-- Log in Start -->
+<div class="container-fluid py-5">
+    <div class="container pt-5 pb-3">
+        <h1 class="display-4 text-uppercase text-center mb-5">Đăng nhập</h1>
+        <div class="row justify-content-center">
+            <div class="col-lg-8 mb-2 mx-auto">
+                <div class="contact-form bg-light mb-4" style="padding: 30px;">
+                    <form asp-action="Dangnhap" asp-controller="Khachhang" asp-route-returnurl="@ViewBag.ReturnUrl" method="post">
+                        <div class="alert alert-danger" role="alert" asp-validation-summary="ModelOnly"></div>
+                        <div class="form-group">
+                            <input asp-for="@Model.Email" type="email" class="form-control p-4" placeholder="Your Email" required="required">
+                        </div>
+                        <div class="form-group">
+                            <input asp-for="@Model.Matkhau" type="password" class="form-control p-4" placeholder="Your Password" required="required">
+                        </div>
+                        <p class="text-center">Bạn chưa có tài khoản? <a asp-action="Dangky" asp-controller="Khachhang">Đăng ký</a></p>
+                        <p class="text-center"><a asp-action="Quenmk" asp-controller="Khachhang">Quên mật khẩu</a></p>
+                        <div class="text-center">
+                            <button class="btn btn-primary py-3 px-5" type="submit">Đăng nhập</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Log in End -->

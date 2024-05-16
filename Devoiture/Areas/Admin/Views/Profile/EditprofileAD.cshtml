@@ -1,0 +1,73 @@
+﻿@model Devoiture.ViewModel.ProfileKH_VM
+@{
+    ViewData["Title"] = "Profile";
+}
+<div class="bg-light rounded p-4">
+    <h6 class="mb-4">Thông tin tài khoản</h6>
+    <form asp-action="EditprofileAD" asp-controller="Profile" asp-area="Admin" method="post" enctype="multipart/form-data">
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="inputEmail3" class="form-label">Email</label>
+                <input type="email" class="form-control" id="inputEmail3" asp-for="Email" readonly>
+            </div>
+            <div class="col-md-6">
+                <label for="inputUsername" class="form-label">Username</label>
+                <input type="text" class="form-control" id="inputUsername" asp-for="Username" readonly>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="inputHoTen" class="form-label">Họ và tên</label>
+                <input type="text" class="form-control" id="inputHoTen" asp-for="HoTen">
+            </div>
+            <div class="col-md-6">
+                <label for="inputSdt" class="form-label">Số điện thoại</label>
+                <input type="text" class="form-control" id="inputSdt" asp-for="Sdt">
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="inputSoCccd" class="form-label">Số CCCD</label>
+                <input type="text" class="form-control" id="inputSoCccd" asp-for="SoCccd">
+            </div>
+            <div class="col-md-6">
+                <label for="inputNgsinh" class="form-label">Ngày sinh</label>
+                <input type="date" class="form-control" id="inputNgsinh" asp-for="Ngsinh">
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label class="form-label">Giới tính</label>
+                <div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" id="radioNam" name="Gioitinh" value="true" asp-for="Gioitinh">
+                        <label class="form-check-label" for="radioNam">Nam</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" id="radioNu" name="Gioitinh" value="false" asp-for="Gioitinh">
+                        <label class="form-check-label" for="radioNu">Nữ</label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <label for="inputHinhDaiDien" class="form-label">Hình đại diện</label>
+                <input type="file" class="form-control" id="inputHinhDaiDien" name="Hinh1">
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="inputHinhCccd" class="form-label">Hình CCCD</label>
+                <input type="file" class="form-control" id="inputHinhCccd" name="Hinh2">
+            </div>
+            <div class="col-md-6">
+                <label for="inputHinhGplx" class="form-label">Hình GPLX</label>
+                <input type="file" class="form-control" id="inputHinhGplx" name="Hinh3">
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-12">
+                <button type="submit" class="btn btn-primary">Lưu</button>
+            </div>
+        </div>
+    </form>
+</div>

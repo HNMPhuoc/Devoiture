@@ -1,0 +1,71 @@
+﻿@model IEnumerable<Devoiture.ViewModel.DanhsachKH_VM>
+
+@{
+    ViewData["Title"] = "Danh sách\nnhân viên";
+}
+<div class="bg-light rounded h-100 p-4">
+    <h6 class="mb-4">Danh sách nhân viên</h6>
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">Avatar</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Username</th>
+                    <th scope="col">Họ Tên</th>
+                    <th scope="col">Số điện thoại</th>
+                    <th scope="col">Ngày sinh</th>                    
+                    <th scope="col">Giới tính</th>
+                    <th scope="col">Khóa tài khoản</th>
+                    <th scope="col">Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @if (!string.IsNullOrEmpty(item.HinhDaiDien))
+                            {
+                                if (item.Online == true)
+                                {
+                                    <img class="rounded-circle" src="~/images/AnhDaiDien/@item.HinhDaiDien" alt="Hình đại diện" style="width: 38px; height: 38px;">
+                                    <div class="bg-success rounded-circle border border-2 border-white position-absolute end-0 bottom-0 p-1"></div>
+                                }
+                                else
+                                {
+                                    <img class="rounded-circle" src="~/images/AnhDaiDien/@item.HinhDaiDien" alt="Hình đại diện" style="width: 38px; height: 38px;">
+                                    <div class="bg-danger rounded-circle border border-2 border-white position-absolute end-0 bottom-0 p-1"></div>
+                                }
+                            }
+                            else
+                            {
+                                if (item.Online == true)
+                                {
+                                    <img class="rounded-circle" src="~/images/AnhDaiDien/userdefault.png" alt="Hình đại diện" style="width: 38px; height: 38px;">
+                                    <div class="bg-success rounded-circle border border-2 border-white position-absolute end-0 bottom-0 p-1"></div>
+                                }
+                                else
+                                {
+                                    <img class="rounded-circle" src="~/images/AnhDaiDien/userdefault.png" alt="Hình đại diện" style="width: 38px; height: 38px;">
+                                    <div class="bg-danger rounded-circle border border-2 border-white position-absolute end-0 bottom-0 p-1"></div>
+                                }
+                            }
+                        </td>
+                        <td>@item.Email</td>
+                        <td>@item.Username</td>
+                        <td>@item.HoTen</td>
+                        <td>@item.Sdt</td>
+                        <td>@item.Ngsinh.ToString("dd/MM/yyyy")</td>                       
+                        <td>@(item.Gioitinh.HasValue ? (item.Gioitinh.Value ? "Nam" : "Nữ") : "Không xác định")</td>
+                        <td>@(item.Lock.HasValue ? (item.Lock.Value ? "Bị khóa" : "Hoạt động") : "Không xác định")</td>
+                        <td class="d-flex flex-column" style="height: 112px;">
+                            <a href="#" class="btn btn-info btn-sm mb-2" style="height:56px;">Edit</a>
+                            <a href="#" class="btn btn-danger btn-sm" style="height:56px;">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,57 @@
+﻿@model IEnumerable<Devoiture.ViewModel.DanhsachxeKH_VM>
+
+@{
+    ViewData["Title"] = "Kiểm duyệt xe";
+}
+<div class="bg-light rounded h-100 p-4">
+    <h6 class="mb-4">Danh sách xe cần duyệt</h6>
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">Biển số xe</th>
+                    <th scope="col">Tên Xe</th>
+                    <th scope="col">Năm Sản Xuất</th>
+                    <th scope="col">Giá Thuê</th>
+                    <th scope="col">Mức Tiêu Thụ Nhiên Liệu</th>
+                    <th scope="col">Hình Ảnh</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Biensoxe</td>
+                        <td>@item.TenXe</td>
+                        <td>@item.NamSx</td>
+                        <td>@item.Giathue</td>
+                        <td>@item.Muctieuthunhienlieu</td>
+                        <td><img src="~/images/Xe/@item.Hinhanh" alt="Hình ảnh" class="img-thumbnail" style="max-height:150px; max-width:150px"></td>
+                        <td class="d-flex flex-column" style="height: 112px;">
+                            <a href="#" class="btn btn-primary btn-sm mb-2" style="height:56px;"onclick="duyetXe('@item.Biensoxe')">Duyệt</a>
+                            <a href="#" class="btn btn-info btn-sm" style="height: 56px;">Edit</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<script>
+    function duyetXe(xeId) {
+        $.ajax({
+            url: '/DuyetXe/Duyet',
+            type: 'POST',
+            data: { xeId: xeId },
+            success: function (result) {
+                // Xử lý kết quả sau khi duyệt xe thành công (nếu cần)
+                // Ví dụ: làm mới trang hoặc cập nhật UI
+                alert('Đã duyệt xe thành công!');
+            },
+            error: function (xhr, status, error) {
+                // Xử lý lỗi (nếu có)
+                alert('Đã xảy ra lỗi: ' + error);
+            }
+        });
+    }
+</script>

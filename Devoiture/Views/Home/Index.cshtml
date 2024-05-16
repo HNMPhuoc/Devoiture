@@ -1,0 +1,88 @@
+﻿@model IEnumerable<Devoiture.ViewModel.DanhsachxeKH_VM>
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<!-- Carousel Start -->
+<div class="container-fluid p-0" style="margin-bottom: 90px;">
+    <div id="header-carousel" class="carousel slide" data-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img class="w-100" src="~/layoutKhachhang/img/carousel-1.jpg" alt="Image">
+                <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
+                    <div class="p-3" style="max-width: 900px;">
+                        <h4 class="text-white text-uppercase mb-md-3">Thuê 1 chiếc xe</h4>
+                        <h1 class="display-1 text-white mb-md-4">Xe cho thuê tốt nhất ở vị trí của bạn</h1>
+                        <a href="" class="btn btn-primary py-md-3 px-md-5 mt-2">Thuê xe ngay</a>
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img class="w-100" src="~/layoutKhachhang/img/carousel-2.jpg" alt="Image">
+                <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
+                    <div class="p-3" style="max-width: 900px;">
+                        <h4 class="text-white text-uppercase mb-md-3">Thuê 1 chiếc xe</h4>
+                        <h6 class="display-1 text-white mb-md-4">Thuê xe chất lượng với khoảng cách không giới hạn</h6>
+                        <a href="" class="btn btn-primary py-md-3 px-md-5 mt-2">Thuê xe ngay</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <a class="carousel-control-prev" href="#header-carousel" data-slide="prev">
+            <div class="btn btn-dark" style="width: 45px; height: 45px;">
+                <span class="carousel-control-prev-icon mb-n2"></span>
+            </div>
+        </a>
+        <a class="carousel-control-next" href="#header-carousel" data-slide="next">
+            <div class="btn btn-dark" style="width: 45px; height: 45px;">
+                <span class="carousel-control-next-icon mb-n2"></span>
+            </div>
+        </a>
+    </div>
+</div>
+<!-- Carousel End -->
+
+<div class="container-fluid py-5">
+    <div class="container pt-5 pb-3">
+        <h1 class="display-1 text-primary text-center">01</h1>
+        @await Html.PartialAsync("AboutContent")
+    </div>
+</div>
+<div class="container-fluid py-5">
+    <div class="container pt-5 pb-3">
+        <h1 class="display-1 text-primary text-center">02</h1>
+        <div class="container-fluid py-5">
+            <div class="container pt-5 pb-3">
+                <div class="row">
+                    @foreach (var item in Model.Take(6))
+                    {
+                        <div class="col-lg-4 col-md-6 mb-2">
+                            <div class="rent-item mb-4">
+                                <img class="img-fluid mb-4" src="~/images/Xe/@item.Hinhanh" alt="@item.TenXe">
+                                <h4 class="text-uppercase mb-4">@item.TenXe</h4>
+                                <div class="d-flex justify-content-center mb-4">
+                                    <div class="px-2">
+                                        <i class="fa fa-car text-primary mr-1"></i>
+                                        <span>@item.NamSx</span>
+                                    </div>
+                                    <div class="px-2 border-left border-right">
+                                        <i class="fa fa-cogs text-primary mr-1"></i>
+                                        <span>@item.Tenloai</span>
+                                    </div>
+                                    <div class="px-2">
+                                        <i class="fa fa-road text-primary mr-1"></i>
+                                        <span>@item.Muctieuthunhienlieu l/100km</span>
+                                    </div>
+                                </div>
+                                <a class="btn btn-primary px-3" asp-action="Thue" asp-controller="Thuexe" asp-route-biensx="@item.Biensoxe">@item.Giathue vnd/Day</a>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="text-center">
+            <a asp-action="Danhsachxe" asp-controller="Xe" class="btn btn-primary btn-lg">View More</a>
+        </div>
+    </div>
+</div>

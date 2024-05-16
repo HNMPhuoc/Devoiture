@@ -1,0 +1,110 @@
+﻿@model Devoiture.ViewModel.SuaxecuaKH_VM
+
+@{
+    ViewData["Title"] = "Thông tin xe";
+}
+@await Html.PartialAsync("_PageHeader")
+<div class="container-fluid py-5">
+    <div class="container pt-5 pb-3">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 mb-2 mx-auto">
+                <div class="contact-form bg-light mb-4" style="padding: 30px;">
+                    <form asp-action="SuaXe" asp-controller="XeKH" method="post" enctype="multipart/form-data">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="form-group">
+                            <label class="control-label">Biển số xe</label>
+                            <input readonly asp-for="Biensoxe" class="form-control" />
+                            <span asp-validation-for="Biensoxe" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">Mẫu xe</label>
+                            <select asp-for="MaMx" class="form-control" id="MaMx" name="MaMx" asp-items="Model.MauXeList"></select>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">Loại xe</label>
+                            <select asp-for="MaLoai" class="form-control" asp-items="@Model.LoaiXeList"></select>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">Giá thuê xe</label>
+                            <input asp-for="Giathue" class="form-control" />
+                            <span asp-validation-for="Giathue" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">Năm sản xuất</label>
+                            <input asp-for="NamSx" class="form-control" />
+                            <span asp-validation-for="NamSx" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">Số ghế ngồi</label>
+                            <input asp-for="Soghe" class="form-control" />
+                            <span asp-validation-for="Soghe" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">Mức tiêu thụ nhiên liệu</label>
+                            <input asp-for="Muctieuthunhienlieu" class="form-control" />
+                            <span asp-validation-for="Muctieuthunhienlieu" class="text-danger"></span>
+                        </div>                       
+                        <div class="form-group">
+                            <label class="control-label">Khu vực</label>
+                            <select asp-for="Makv" class="form-control" asp-items="Model.KhuVucList"></select>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">Địa chỉ xe</label>
+                            <input asp-for="Diachixe" class="form-control" />
+                            <span asp-validation-for="Diachixe" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">Điều khoản thuê xe</label>
+                            <input asp-for="Dieukhoanthuexe" class="form-control" />
+                            <span asp-validation-for="Dieukhoanthuexe" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">Đặc điểm chức năng của xe</label>
+                            <input asp-for="MotaDacDiemChucNang" class="form-control" />
+                            <span asp-validation-for="MotaDacDiemChucNang" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">Loại nhiên liệu</label>
+                            <input asp-for="Loainhienlieu" class="form-control" />
+                            <span asp-validation-for="Loainhienlieu" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">Hình ảnh xe</label>
+                            <input type="file" name="Hinh" class="form-control" />
+                            <img src="~/images/Xe/@Model.Hinhanh" alt="Hình ảnh xe" style="max-width:150px;max-height:150px;border-radius:7px"/>
+                        </div>
+                        <div class="form-group form-check">
+                            <label class="form-check-label">Bạn có đang bảo trì xe không?</label>
+                            <div class="form-check form-check-inline">
+                                <input asp-for="Trangthaibaotri" type="radio" class="form-check-input" value="true">
+                                <label class="form-check-label" for="yesradio">Có</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input asp-for="Trangthaibaotri" type="radio" class="form-check-input" value="false">
+                                <label class="form-check-label" for="noradio">Không</label>
+                            </div>
+                        </div>
+                        <div class="form-group form-check">
+                            <label class="form-check-label">Bạn có muốn giao xe tận nơi cho người thuê không?</label>
+                            <div class="form-check form-check-inline">
+                                <input asp-for="Giaoxetannoi" type="radio" class="form-check-input" value="true">
+                                <label class="form-check-label" for="yesradio">Có</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input asp-for="Giaoxetannoi" type="radio" class="form-check-input" value="false">
+                                <label class="form-check-label" for="noradio">Không</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" value="Save" class="btn btn-primary" />
+                        </div>
+                        <div class="form-group">
+                            <a asp-action="DanhsachxecuaKH" asp-controller="XeKH">Back to List</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

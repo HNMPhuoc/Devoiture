@@ -1,0 +1,62 @@
+﻿@model Devoiture.ViewModel.DangkyKH_VM
+@{
+    ViewData["Title"] = "Đăng ký vào hệ thống";
+}
+
+@await Html.PartialAsync("_PageHeader")
+
+<!-- Sign up Start -->
+<div class="container-fluid py-5">
+    <div class="container pt-5 pb-3">
+        <h1 class="display-4 text-uppercase text-center mb-5">Đăng ký</h1>
+        <div class="row justify-content-center">
+            <div class="col-lg-8 mb-2 mx-auto">
+                <div class="contact-form bg-light mb-4" style="padding: 30px;">
+                    <form asp-action="Dangky" asp-controller="Khachhang" method="post">
+                        <div class="alert alert-danger" role="alert" asp-validation-summary="ModelOnly"></div>
+
+                        <div class="form-group">
+                            <input asp-for="@Model.Email" type="email" class="form-control p-4" placeholder="Your Email" required="required">
+                        </div>
+                        <div class="form-group">
+                            <input asp-for="@Model.HoTen" type="text" class="form-control p-4" placeholder="Your Fullname" required="required">
+                        </div>
+                        <div class="row">
+                            <div class="col-6 form-group">
+                                <input asp-for="@Model.Username" type="text" class="form-control p-4" placeholder="Your Username" required="required">
+                            </div>
+                            <div class="col-6 form-group">
+                                <input asp-for="@Model.Matkhau" type="password" class="form-control p-4" placeholder="Your Password" required="required">
+                            </div>
+                            <div class="col-6 form-group">
+                                <input asp-for="@Model.Sdt" type="text" class="form-control p-4" placeholder="Your Phonenumber" required="required">
+                            </div>
+                            <div class="col-6 form-group">
+                                <div class="date mb-3" id="date1" data-target-input="nearest">
+                                    <input asp-for="@Model.Ngsinh" type="text" class="form-control p-4 datetimepicker-input" placeholder="Your Birthday"
+                                           data-target="#date1" data-toggle="datetimepicker" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="mr-3">Giới tính:</label>
+                            <div class="form-check form-check-inline">
+                                <input asp-for="@Model.Gioitinh" type="radio" class="form-check-input" value="true">
+                                <label class="form-check-label" for="namradio">Nam</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input asp-for="@Model.Gioitinh" type="radio" class="form-check-input" value="false">
+                                <label class="form-check-label" for="nuradio">Nữ</label>
+                            </div>
+                        </div>
+                        <p class="text-center">Bạn đã có tài khoản? <a asp-action="Dangnhap" asp-controller="Khachhang">Đăng nhập</a></p>
+                        <div class="text-center">
+                            <button class="btn btn-primary py-3 px-5" type="submit">Đăng ký</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Sign up End -->
