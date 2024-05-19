@@ -1,4 +1,5 @@
-﻿using Devoiture.Helpers;
+﻿using AutoMapper;
+using Devoiture.Helpers;
 using Devoiture.Models;
 using Devoiture.ViewModel;
 using Microsoft.AspNetCore.Authorization;
@@ -7,15 +8,17 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Devoiture.Areas.Admin.Controllers
 {
-    [CustomAuthorize]
+    [ManagerAuthorize]
+    [Authorize]
     public class QLKhachhangController : Controller
     {
         private readonly Devoiture1Context _context;
-        public QLKhachhangController(Devoiture1Context context)
+        private readonly IMapper _mapper;
+        public QLKhachhangController(Devoiture1Context context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
-
         public IActionResult DanhsachKH()
         {
             var dskh = _context.Taikhoans
@@ -33,11 +36,36 @@ namespace Devoiture.Areas.Admin.Controllers
                     Gioitinh = nv.Gioitinh,
                     Online = nv.Online,
                     Lock = nv.Lock,
-                    Soxe = _context.Xes.Count(x => x.Email == nv.Email)
+                    Soxe = _context.Xes.Count(x => x.Email == nv.Email && x.TrangthaiDuyet == true)
                 })
                 .OrderBy(ten => ten.HoTen)
                 .ToList();
             return View("~/Areas/Admin/Views/QLKhachhang/DanhsachKH.cshtml",dskh);
+        }
+        [HttpPost]
+        public IActionResult LockAccount(string email, bool isLocked)
+        {
+            var khachhang = _context.Taikhoans.SingleOrDefault(t => t.Email == email);
+            if (khachhang != null)
+            {
+                khachhang.Lock = isLocked;
+                _context.SaveChanges();
+            }
+            return RedirectToAction("DanhsachKH");
+        }
+        [HttpGet]
+        public IActionResult ChiTietKhachHang(string email)
+        {
+            var khachHang = _context.Taikhoans
+                .Include(kh => kh.Xes)
+                .FirstOrDefault(kh => kh.Email == email);
+
+            if (khachHang == null)
+            {
+                return NotFound();
+            }
+            var model = _mapper.Map<ChitietKH_VM>(khachHang);
+            return View("~/Areas/Admin/Views/QLKhachhang/ChiTietKhachHang.cshtml", model);
         }
     }
 }

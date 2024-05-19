@@ -33,6 +33,8 @@ public partial class Devoiture1Context : DbContext
 
     public virtual DbSet<Taikhoan> Taikhoans { get; set; }
 
+    public virtual DbSet<Website> Websites { get; set; }
+
     public virtual DbSet<Xe> Xes { get; set; }
 
     public virtual DbSet<Yeucauthuexe> Yeucauthuexes { get; set; }
@@ -193,6 +195,22 @@ public partial class Devoiture1Context : DbContext
                 .HasForeignKey(d => d.IdQuyen)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Taikhoan_Quyen");
+        });
+
+        modelBuilder.Entity<Website>(entity =>
+        {
+            entity.HasKey(e => e.MaWebsite);
+
+            entity.ToTable("Website");
+
+            entity.Property(e => e.MaWebsite).HasColumnName("maWebsite");
+            entity.Property(e => e.MaQuyen).HasColumnName("maQuyen");
+            entity.Property(e => e.TenWebsite).HasMaxLength(50);
+
+            entity.HasOne(d => d.MaQuyenNavigation).WithMany(p => p.Websites)
+                .HasForeignKey(d => d.MaQuyen)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Website_Quyen");
         });
 
         modelBuilder.Entity<Xe>(entity =>

@@ -10,6 +10,7 @@ using Devoiture.Helpers;
 
 namespace Devoiture.Controllers
 {
+    [AllowAnonymous]
     public class KhachhangController : Controller
     {
         private readonly Devoiture1Context _context;
@@ -257,6 +258,14 @@ namespace Devoiture.Controllers
             }
             _context.Update(editkh);
             _context.SaveChanges();
+            if (editkh.HinhDaiDien != null)
+            {
+                HttpContext.Session.SetString(MySettings.ACCOUNT_AVATAR, editkh.HinhDaiDien);
+            }
+            if (editkh.Username != null)
+            {
+                HttpContext.Session.SetString(MySettings.ACCOUNT_NAME, editkh.Username);
+            }
             return RedirectToAction("Index","Home");
         }
     }

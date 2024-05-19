@@ -1,0 +1,56 @@
+﻿@model IEnumerable<Devoiture.ViewModel.DanhSachTKNVQ_VM>
+
+@{
+    ViewData["Title"] = "Change Role";
+}
+
+<div class="container mt-5">
+    <h2 class="mb-4">Change Role</h2>
+
+    <div class="table-responsive">
+        <table class="table table-hover table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Avatar</th>
+                    <th scope="col">Full name</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Role</th>
+                    <th scope="col">Change Role</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            <div style="position: relative; width: 40px; height: 40px;">
+                                <img class="rounded-circle" src="~/images/AnhDaiDien/@(string.IsNullOrEmpty(item.HinhDaiDien) ? "userdefault.png" : item.HinhDaiDien)" alt="Avatar" style="width: 100%; height: 100%;">
+                                @if (item.Online.HasValue)
+                                {
+                                    <div class="position-absolute" style="bottom: 0; right: 0;">
+                                        <div class="bg-@(item.Online.Value ? "success" : "danger") rounded-circle border border-2 border-white p-1"></div>
+                                    </div>
+                                }
+                            </div>
+                        </td>
+                        <td>@item.HoTen</td>
+                        <td>@item.Email</td>
+                        <td>@item.TenQuyen</td>
+                        <td>
+                            <form asp-action="ChangeRole" method="post" style="display:inline;">
+                                <input type="hidden" name="email" value="@item.Email" />
+                                <select name="newRoleId" class="form-select">
+                                    @foreach (var role in ViewBag.Roles)
+                                    {
+                                        <option value="@role.MaQuyen">@role.TenQuyen</option>
+                                    }
+                                </select>
+                                <button type="submit" class="btn btn-primary btn-sm">Change Role</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

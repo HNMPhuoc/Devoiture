@@ -9,6 +9,8 @@ using AutoMapper;
 
 namespace Devoiture.Controllers
 {
+    [CustomerAuthorize]
+    [Authorize]
     public class XeKHController : Controller
     {
         private readonly Devoiture1Context _context;
@@ -19,7 +21,6 @@ namespace Devoiture.Controllers
             _context = context;
             _imapper = mapper;
         }
-        [Authorize]
         public IActionResult DanhsachxecuaKH()
         {
             var kh = HttpContext.User.Claims.SingleOrDefault(p => p.Type == MySettings.ACCOUNT_KEY).Value;
@@ -47,7 +48,6 @@ namespace Devoiture.Controllers
             var models = _context.MauXes.Where(x => x.MaHx == brandId).ToList();
             return Json(models);
         }
-        [Authorize]
         [HttpGet]
         public IActionResult ThemXe()
         {
@@ -75,13 +75,11 @@ namespace Devoiture.Controllers
                                         .ToList();
             return View(viewModel);
         }
-        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult ThemXe(ThemxeVM model, IFormFile Hinh)
         {
             var xe = _imapper.Map<Xe>(model);
-
             if (ModelState.IsValid)
             {
                 var kh = HttpContext.User.Claims.SingleOrDefault(p => p.Type == MySettings.ACCOUNT_KEY).Value;
@@ -130,7 +128,7 @@ namespace Devoiture.Controllers
                     xe.Hinhanh = MyUtil.UploadHinh("Xe", Hinh);
                 }
                 _context.Xes.Add(xe);
-                _context.SaveChangesAsync();
+                _context.SaveChanges();
                 return RedirectToAction("Index", "Home");
             }
             model.LoaiXeList = _context.LoaiXes
@@ -156,7 +154,6 @@ namespace Devoiture.Controllers
                                         .ToList();
             return View(model);
         }
-        [Authorize]
         [HttpGet]
         public IActionResult SuaXe(string biensx)
         {
@@ -202,8 +199,8 @@ namespace Devoiture.Controllers
             };
             return View(model);
         }
-        [Authorize]
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult SuaXe(SuaxecuaKH_VM model, IFormFile Hinh)
         {
             var suaxe = _context.Xes.FirstOrDefault(p => p.Biensoxe == model.Biensoxe);
@@ -229,7 +226,6 @@ namespace Devoiture.Controllers
             _context.SaveChanges();
             return RedirectToAction("Index", "Home");
         }
-        [Authorize]
         [HttpGet]
         public IActionResult XoaXe(string biensx)
         {
@@ -240,7 +236,6 @@ namespace Devoiture.Controllers
             };
             return View(model);
         }
-        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult XoaXe(XoaxeVM model)

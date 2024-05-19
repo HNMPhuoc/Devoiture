@@ -1,55 +1,74 @@
 ﻿@model IEnumerable<Devoiture.ViewModel.DanhsachKH_VM>
 
 @{
-    ViewData["Title"] = "Danh sách\nkhách hàng";
+    ViewData["Title"] = "Danh sách khách hàng";
 }
-<div class="bg-light rounded h-100 p-4">
+<div class="container mt-5">
     <h6 class="mb-4">Danh sách khách hàng</h6>
     <div class="table-responsive">
-        <table class="table table-hover">
-            <thead>
+        <table class="table table-hover table-bordered">
+            <thead class="thead-dark">
                 <tr>
-                    <th scope="col">Email</th>
+                    <th scope="col">Avatar</th>
                     <th scope="col">Username</th>
-                    <th scope="col">Họ Tên</th>
-                    <th scope="col">Số điện thoại</th>
-                    <th scope="col">Ngày sinh</th>
-                    <th scope="col">Hình đại diện</th>
-                    <th scope="col">Trạng thái</th>
-                    <th scope="col">Giới tính</th>
-                    <th scope="col">Khóa tài khoản</th>
-                    <th scope="col">Số xe</th>
-                    <th scope="col">Thao tác</th>
+                    <th scope="col">Full name</th>
+                    <th scope="col">Phone</th>
+                    <th scope="col">Birthday</th>
+                    <th scope="col">Gender</th>
+                    <th scope="col">Locked account</th>
+                    <th scope="col">Number of vehicles</th>
+                    <th scope="col">Actions</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var item in Model)
                 {
                     <tr>
-                        <td>@item.Email</td>
+                        <td>
+                            <div style="position: relative; width: 40px; height: 40px;">
+                                <img class="rounded-circle" src="~/images/AnhDaiDien/@(string.IsNullOrEmpty(item.HinhDaiDien) ? "userdefault.png" : item.HinhDaiDien)" alt="Hình đại diện" style="width: 100%; height: 100%;">
+                                @if (item.Online.HasValue)
+                                {
+                                    <div class="position-absolute" style="bottom: 0; right: 0;">
+                                        @if (item.Online.Value)
+                                        {
+                                            <div class="bg-success rounded-circle border border-2 border-white p-1"></div>
+                                        }
+                                        else
+                                        {
+                                            <div class="bg-danger rounded-circle border border-2 border-white p-1"></div>
+                                        }
+                                    </div>
+                                }
+                            </div>
+                        </td>
                         <td>@item.Username</td>
                         <td>@item.HoTen</td>
                         <td>@item.Sdt</td>
                         <td>@item.Ngsinh.ToString("dd/MM/yyyy")</td>
                         <td>
-                            @if (!string.IsNullOrEmpty(item.HinhDaiDien))
-                            {
-                                <img class="rounded-circle" src="~/images/AnhDaiDien/@item.HinhDaiDien" alt="Hình đại diện" style="width: 38px; height: 38px;">
-                            }
-                            else
-                            {
-                                <img class="rounded-circle" src="~/images/AnhDaiDien/userdefault.png" alt="Hình đại diện" style="width: 38px; height: 38px;">
-                            }
+                            @(item.Gioitinh.HasValue ? (item.Gioitinh.Value ? "Nam" : "Nữ") : "Không xác định")
                         </td>
                         <td>
-                            @(item.Online.HasValue ? (item.Online.Value ? "Online" : "Offline") : "Không xác định")
+                            <form asp-action="LockAccount" asp-controller="QLKhachhang" method="post">
+                                <input type="hidden" name="email" value="@item.Email" />
+                                <input type="hidden" name="isLocked" value="@(item.Lock.HasValue && item.Lock.Value ? "false" : "true")" />
+                                <button type="submit" class="btn btn-link">
+                                    @if (item.Lock.HasValue && item.Lock.Value)
+                                    {
+                                        <span class="badge bg-danger">Bị khóa</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-success">Hoạt động</span>
+                                    }
+                                </button>
+                            </form>
                         </td>
-                        <td>@(item.Gioitinh.HasValue ? (item.Gioitinh.Value ? "Nam" : "Nữ") : "Không xác định")</td>
-                        <td>@(item.Lock.HasValue ? (item.Lock.Value ? "Bị khóa" : "Hoạt động") : "Không xác định")</td>
+
                         <td>@item.Soxe</td>
-                        <td class="d-flex flex-column" style="height: 112px;">
-                            <a href="#" class="btn btn-info btn-sm mb-2" style="height:56px;">Edit</a>
-                            <a href="#" class="btn btn-danger btn-sm" style="height:56px;">Delete</a>
+                        <td>
+                            <a asp-action="ChiTietKhachHang" asp-controller="QLKhachhang" asp-route-email="@item.Email" class="btn btn-info btn-sm">View</a>
                         </td>
                     </tr>
                 }

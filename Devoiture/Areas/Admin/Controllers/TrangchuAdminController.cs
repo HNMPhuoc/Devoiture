@@ -6,7 +6,8 @@ using System.Security.Claims;
 
 namespace Devoiture.Areas.Admin.Controllers
 {
-    [CustomAuthorize]
+    [ManagerAuthorize]
+    [Authorize]
     public class TrangchuAdminController : Controller
     {
         private readonly Devoiture1Context _context;

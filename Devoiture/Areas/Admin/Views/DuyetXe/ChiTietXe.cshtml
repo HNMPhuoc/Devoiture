@@ -1,0 +1,75 @@
+﻿@model Devoiture.ViewModel.Chitietxekh_VM
+
+@{
+    ViewData["Title"] = "Chi tiết xe";
+}
+
+<div class="container mt-5">
+    <h4>Chi tiết xe</h4>
+    <div class="row">
+        <div class="col-md-6">
+            <img src="~/images/Xe/@Model.Hinhanh" alt="Hình ảnh xe" class="img-fluid img-thumbnail mb-3" style="max-width: 100%; height: auto;">
+            <div class="mb-3">
+                <h5>@Model.tenMx</h5>
+                <p>@Model.tenLoai</p>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <table class="table table-striped">
+                <tr>
+                    <th>Biển số xe:</th>
+                    <td>@Model.Biensoxe</td>
+                </tr>
+                <tr>
+                    <th>Chủ xe:</th>
+                    <td>@Model.Email</td>
+                </tr>
+                <tr>
+                    <th>Giá thuê:</th>
+                    <td>@Model.Giathue.ToString("C")</td>
+                </tr>
+                <tr>
+                    <th>Năm sản xuất:</th>
+                    <td>@Model.NamSx</td>
+                </tr>
+                <tr>
+                    <th>Số ghế:</th>
+                    <td>@Model.Soghe</td>
+                </tr>
+                <tr>
+                    <th>Mức tiêu thụ nhiên liệu:</th>
+                    <td>@Model.Muctieuthunhienlieu L/100km</td>
+                </tr>
+                <tr>
+                    <th>Địa chỉ xe:</th>
+                    <td>@Model.Diachixe</td>
+                </tr>
+                <tr>
+                    <th>Giao xe tận nơi:</th>
+                    <td>@(Model.Giaoxetannoi ? "Có" : "Không")</td>
+                </tr>
+                <tr>
+                    <th>Điều khoản thuê xe:</th>
+                    <td>@Model.Dieukhoanthuexe</td>
+                </tr>
+                <tr>
+                    <th>Mô tả đặc điểm chức năng:</th>
+                    <td>@Model.MotaDacDiemChucNang</td>
+                </tr>
+                <tr>
+                    <th>Loại nhiên liệu:</th>
+                    <td>@Model.Loainhienlieu</td>
+                </tr>
+                <tr>
+                    <th>Trạng thái bảo trì:</th>
+                    <td>@(Model.Trangthaibaotri ? "Có" : "Không")</td>
+                </tr>
+                <tr>
+                    <th>Khu vực:</th>
+                    <td>@Model.tenkv</td>
+                </tr>
+            </table>
+            <a asp-action="DanhsachxeCanDuyet" asp-controller="DuyetXe" asp-area="Admin" class="btn btn-secondary mt-3">Trở về danh sách</a>
+        </div>
+    </div>
+</div>

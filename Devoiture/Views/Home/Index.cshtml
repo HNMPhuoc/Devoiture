@@ -71,10 +71,10 @@
                                     </div>
                                     <div class="px-2">
                                         <i class="fa fa-road text-primary mr-1"></i>
-                                        <span>@item.Muctieuthunhienlieu l/100km</span>
+                                        <span>@item.Muctieuthunhienlieu L/100km</span>
                                     </div>
                                 </div>
-                                <a class="btn btn-primary px-3" asp-action="Thue" asp-controller="Thuexe" asp-route-biensx="@item.Biensoxe">@item.Giathue vnd/Day</a>
+                                <a class="btn btn-primary px-3" asp-action="Thue" asp-controller="Thuexe" asp-route-biensx="@item.Biensoxe">@item.Giathue.ToString("C")/Day</a>
                             </div>
                         </div>
                     }

@@ -1,0 +1,52 @@
+﻿@model IEnumerable<Devoiture.ViewModel.DanhsachQuyen_VM>
+
+@{
+    ViewData["Title"] = "Phân quyền cho các vai trò";
+}
+
+<div class="container mt-5">
+    <h2 class="mb-4">Phân quyền cho các vai trò</h2>
+
+    <div class="mb-4">
+        <form asp-action="ThemQuyenMoi" method="post" class="form-inline row g-3">
+            <div class="col-auto">
+                <label for="TenQuyen" class="visually-hidden">Tên quyền</label>
+                <input type="text" class="form-control" id="TenQuyen" name="TenQuyen" placeholder="Tên quyền" required>
+            </div>
+            <div class="col-auto">
+                <button type="submit" class="btn btn-primary">Thêm quyền</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="mb-4">
+        <select id="roleSelect" class="form-select">
+            <option value="" disabled selected>Chọn quyền</option>
+            @foreach (var quyen in ViewBag.Quyens as SelectList)
+            {
+                <option value="@quyen.Value">@quyen.Text</option>
+            }
+        </select>
+    </div>
+    <div id="roleDetailsContainer"></div>
+</div>
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#roleSelect').change(function () {
+                var maQuyen = $(this).val();
+                if (maQuyen) {
+                    $.ajax({
+                        url: '@Url.Action("GetQuyenDetails", "PhanQuyen", new { area = "Admin" })',
+                        type: 'POST',
+                        data: { maQuyen: maQuyen },
+                        success: function (result) {
+                            $('#roleDetailsContainer').html(result);
+                            $('#maQuyen').val(maQuyen); // Cập nhật giá trị maQuyen cho input hidden
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+}

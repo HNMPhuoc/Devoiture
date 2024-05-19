@@ -7,7 +7,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Devoiture.Areas.Admin.Controllers
 {
-    [CustomAuthorize]
+    [ManagerAuthorize]
+    [Authorize]
     public class DuyetXeController : Controller
     {
         private readonly Devoiture1Context _context;
@@ -26,6 +27,7 @@ namespace Devoiture.Areas.Admin.Controllers
                         .Where(xm => xm.Xe.Hide || !xm.Xe.TrangthaiDuyet)
                         .Select(xm => new DanhsachxeKH_VM
                         {
+                            Email = xm.Xe.Email,
                             Biensoxe = xm.Xe.Biensoxe,
                             TenXe = xm.MauXe.TenMx,
                             NamSx = xm.Xe.NamSx,
@@ -40,21 +42,50 @@ namespace Devoiture.Areas.Admin.Controllers
         [HttpPost]
         public IActionResult Duyet(string xeId)
         {
-            // Tìm xe trong cơ sở dữ liệu
             var xe = _context.Xes.FirstOrDefault(x => x.Biensoxe == xeId);
             if (xe != null)
             {
-                // Cập nhật trạng thái và ẩn
                 xe.TrangthaiDuyet = true;
                 xe.Hide = false;
-                // Lưu thay đổi vào cơ sở dữ liệu
                 _context.SaveChanges();
-                return Ok(); // Trả về mã HTTP 200 OK
+                return RedirectToAction("DanhsachxeCanDuyet");
             }
             else
             {
-                return NotFound(); // Trả về mã HTTP 404 Not Found nếu không tìm thấy xe
+                return NotFound();
             }
+        }
+        public async Task<IActionResult> ChiTietXe(string bienSoXe)
+        {
+            var xe = await _context.Xes
+                .Include(x => x.MaMxNavigation)
+                .Include(x => x.MaLoaiNavigation)
+                .Include(x => x.MakvNavigation)
+                .FirstOrDefaultAsync(x => x.Biensoxe == bienSoXe);
+            if (xe == null)
+            {
+                return NotFound();
+            }
+            var viewModel = new Chitietxekh_VM
+            {
+                Email = xe.Email,
+                Biensoxe = xe.Biensoxe,
+                tenLoai = xe.MaLoaiNavigation.TenLoai,
+                tenMx = xe.MaMxNavigation.TenMx,
+                Giathue = xe.Giathue,
+                NamSx = xe.NamSx,
+                Soghe = xe.Soghe,
+                Muctieuthunhienlieu = xe.Muctieuthunhienlieu,
+                Diachixe = xe.Diachixe,
+                Giaoxetannoi = xe.Giaoxetannoi,
+                Dieukhoanthuexe = xe.Dieukhoanthuexe,
+                MotaDacDiemChucNang = xe.MotaDacDiemChucNang,
+                Loainhienlieu = xe.Loainhienlieu,
+                Hinhanh = xe.Hinhanh,
+                Trangthaibaotri = xe.Trangthaibaotri,
+                tenkv = xe.MakvNavigation.TenKv
+            };
+            return View("~/Areas/Admin/Views/DuyetXe/Chitietxe.cshtml", viewModel);
         }
     }
 }

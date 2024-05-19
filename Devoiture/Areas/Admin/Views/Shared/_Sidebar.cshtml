@@ -32,18 +32,26 @@
         <div class="navbar-nav w-100">
             <a asp-action="Index" asp-controller="TrangchuAdmin" class="nav-item nav-link active"><i class="fa fa-tachometer-alt me-2"></i>Trang chủ</a>
             <div class="nav-item dropdown">
-                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-laptop me-2"></i>Xe oto</a>
+                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-laptop me-2"></i>Quyền tài khoản</a>
                 <div class="dropdown-menu bg-transparent border-0">
-                    <a asp-action="DanhsachxeCanDuyet" asp-controller="DuyetXe" asp-area="Admin" class="dropdown-item">Xe khách hàng</a>
+                    <a asp-action="PhanQuyenRole" asp-controller="PhanQuyen" class="nav-item nav-link"><i class="fa fa-tachometer-alt me-2"></i>Phân quyền tài khoản</a>
+                    <a asp-action="ChangeRole" asp-controller="PhanQuyen" class="nav-item nav-link"><i class="fa fa-tachometer-alt me-2"></i>Chuyển quyền tài khoản</a>
+                    <a asp-action="ChangeNameRole" asp-controller="PhanQuyen" class="nav-item nav-link"><i class="fa fa-tachometer-alt me-2"></i>Đổi tên quyền</a>
+                </div>
+            </div>            
+            <div class="nav-item dropdown">
+                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-laptop me-2"></i>Nhân viên</a>
+                <div class="dropdown-menu bg-transparent border-0">
+                    <a asp-action="DanhsachNV" asp-controller="QLNhanvien" asp-area="Admin" class="dropdown-item"><i class="fa fa-tachometer-alt me-2"></i>Quản lí tài khoản</a>
                 </div>
             </div>
             <div class="nav-item dropdown">
-                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-laptop me-2"></i>Tài khoản</a>
+                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-laptop me-2"></i>Khách hàng</a>
                 <div class="dropdown-menu bg-transparent border-0">
-                    <a asp-action="DanhsachKH" asp-controller="QLKhachhang" asp-area="Admin" class="dropdown-item">Khách hàng</a>
-                    <a asp-action="DanhsachNV" asp-controller="QLNhanvien" asp-area="Admin" class="dropdown-item">Nhân viên</a>
+                    <a asp-action="DanhsachKH" asp-controller="QLKhachhang" asp-area="Admin" class="dropdown-item"><i class="fa fa-tachometer-alt me-2"></i>Quản lí tài khoản</a>
+                    <a asp-action="DanhsachxeCanDuyet" asp-controller="DuyetXe" asp-area="Admin" class="dropdown-item"><i class="fa fa-tachometer-alt me-2"></i>Kiểm duyệt xe</a>
                 </div>
-            </div>
+            </div>            
         </div>
     </nav>
 </div>

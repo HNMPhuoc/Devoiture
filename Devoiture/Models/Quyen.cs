@@ -9,13 +9,7 @@ public partial class Quyen
 
     public string TenQuyen { get; set; } = null!;
 
-    public bool? Create { get; set; }
-
-    public bool? Read { get; set; }
-
-    public bool? Update { get; set; }
-
-    public bool? Delete { get; set; }
-
     public virtual ICollection<Taikhoan> Taikhoans { get; set; } = new List<Taikhoan>();
+
+    public virtual ICollection<Website> Websites { get; set; } = new List<Website>();
 }

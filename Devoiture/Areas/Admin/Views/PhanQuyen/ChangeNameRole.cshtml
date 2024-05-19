@@ -1,0 +1,31 @@
+﻿@model Devoiture.ViewModel.ChangeNameRole_VM
+
+@{
+    ViewData["Title"] = "Đổi tên quyền";
+}
+
+<div class="container mt-5">
+    <h2 class="mb-4">Đổi tên quyền</h2>
+
+    <div class="mb-4">
+        <form asp-action="ChangeNameRole" method="post" class="form-inline row g-3">
+            <div class="col-auto">
+                <label for="MaQuyen" class="visually-hidden">Chọn quyền</label>
+                <select class="form-select" id="MaQuyen" name="MaQuyen" required>
+                    <option value="" disabled selected>Chọn quyền</option>
+                    @foreach (var quyen in Model.DanhSachQuyen)
+                    {
+                        <option value="@quyen.MaQuyen">@quyen.TenQuyen</option>
+                    }
+                </select>
+            </div>
+            <div class="col-auto">
+                <label for="TenQuyen" class="visually-hidden">Tên quyền mới</label>
+                <input type="text" class="form-control" id="TenQuyen" name="TenQuyen" placeholder="Tên quyền mới" required>
+            </div>
+            <div class="col-auto">
+                <button type="submit" class="btn btn-primary">Đổi tên</button>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,4 +1,4 @@
-using Devoiture.Models;
+﻿using Devoiture.Models;
 using Devoiture.Helpers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -7,7 +7,11 @@ using System.Security.Claims;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews(options =>
+{
+    // Đăng ký bộ lọc ManagerAuthorizeFilter cho tất cả các controller
+    options.Filters.Add<ManagerAuthorizeFilter>();
+});
 
 builder.Services.AddDbContext<Devoiture1Context>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("Devoiture1")));
 
@@ -47,8 +51,6 @@ app.UseRouting();
 app.UseAuthentication();
 
 app.UseAuthorization();
-
-
 
 app.UseSession();
 
