@@ -8,7 +8,7 @@
 
 <div class="container-fluid py-5">
     <p>
-        <a asp-action="ThemXe">Thêm Xe Mới</a>
+        <a asp-action="ThemXe">Cho thuê xe</a>
     </p>
     <div class="container pt-5 pb-3">
         <div class="row">
@@ -45,7 +45,6 @@
                             </div>
                         </div>
                         <a class="btn btn-primary px-3" asp-action="SuaXe" asp-route-biensx="@item.Biensoxe">Chi tiết xe</a>
-                        <a class="btn btn-danger px-3" asp-action="XoaXe" asp-route-biensx="@item.Biensoxe">Thu hồi xe</a>
                     </div>
                 </div>
             }

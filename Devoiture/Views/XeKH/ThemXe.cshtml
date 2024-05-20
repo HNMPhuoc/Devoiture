@@ -1,142 +1,195 @@
 ﻿@model Devoiture.ViewModel.ThemxeVM
 
 @{
-    ViewData["Title"] = "Thêm xe";
+    ViewData["Title"] = "Đăng kí cho thuê xe tự lái";
 }
 @await Html.PartialAsync("_PageHeader")
-<div class="container-fluid py-5">
+<div class="container-fluid py-5 bg-light">
     <div class="container pt-5 pb-3">
         <h1 class="display-4 text-uppercase text-center mb-5">Đăng ký cho thuê xe</h1>
         <div class="row justify-content-center">
-            <div class="col-lg-8 mb-2 mx-auto">
-                <div class="contact-form bg-light mb-4" style="padding: 30px;">
-                    <form asp-action="ThemXe" asp-controller="XeKH" method="post" enctype="multipart/form-data">
-                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                        <div class="form-group">
-                            <label class="control-label">Biển số xe<span style="color:red">(Lưu ý: Chỉ được nhập 1 lần duy nhát)</span></label>
-                            <input asp-for="Biensoxe" class="form-control" />
-                            <span asp-validation-for="Biensoxe" class="text-danger"></span>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label">Hãng xe</label>
-                            <select asp-for="MaHx" class="form-control" id="MaHx" name="MaHx" asp-items="Model.HangXeList"></select>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label">Mẫu xe</label>
-                            <select asp-for="MaMx" class="form-control" id="MaMx" name="MaMx" asp-items="Model.MauXeList"></select>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label">Loại xe</label>
-                            <select asp-for="MaLoai" class="form-control" asp-items="@Model.LoaiXeList"></select>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label">Giá thuê xe</label>
-                            <input asp-for="Giathue" class="form-control" />
-                            <span asp-validation-for="Giathue" class="text-danger"></span>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label">Năm sản xuất</label>
-                            <input asp-for="NamSx" class="form-control" />
-                            <span asp-validation-for="NamSx" class="text-danger"></span>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label">Số ghế ngồi</label>
-                            <input asp-for="Soghe" class="form-control" />
-                            <span asp-validation-for="Soghe" class="text-danger"></span>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label">Mức tiêu thụ nhiên liệu</label>
-                            <input asp-for="Muctieuthunhienlieu" class="form-control" />
-                            <span asp-validation-for="Muctieuthunhienlieu" class="text-danger"></span>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label">Hình ảnh xe</label>
-                            <input type="file" name="Hinh" class="form-control" />
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label">Khu vực</label>
-                            <select asp-for="Makv" class="form-control" asp-items="Model.KhuVucList"></select>
-                        </div>
-                        <div class="form-group">
-                            <label asp-for="Diachixe" class="control-label">Địa chỉ xe</label>
-                            <input asp-for="Diachixe" class="form-control" />
-                            <span asp-validation-for="Diachixe" class="text-danger"></span>
-                        </div>
-                        <div class="form-group">
-                            <label asp-for="Dieukhoanthuexe" class="control-label">Điều khoản thuê xe</label>
-                            <input asp-for="Dieukhoanthuexe" class="form-control" />
-                            <span asp-validation-for="Dieukhoanthuexe" class="text-danger"></span>
-                        </div>
-                        <div class="form-group">
-                            <label asp-for="MotaDacDiemChucNang" class="control-label">Đặc điểm chức năng của xe</label>
-                            <input asp-for="MotaDacDiemChucNang" class="form-control" />
-                            <span asp-validation-for="MotaDacDiemChucNang" class="text-danger"></span>
-                        </div>
-                        <div class="form-group">
-                            <label asp-for="Loainhienlieu" class="control-label">Loại nhiên liệu</label>
-                            <input asp-for="Loainhienlieu" class="form-control" />
-                            <span asp-validation-for="Loainhienlieu" class="text-danger"></span>
-                        </div>
-                        <div class="form-group form-check">
-                            <label class="form-check-label">Bạn có đang bảo trì xe không?</label>
-                            <div class="form-check form-check-inline">
-                                <input asp-for="Trangthaibaotri" type="radio" class="form-check-input" value="true">
-                                <label class="form-check-label" for="yesradio">Có</label>
+            <div class="col-lg-8">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <form asp-action="ThemXe" asp-controller="XeKH" method="post" enctype="multipart/form-data">
+                            <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+                            <div class="form-group">
+                                <label class="control-label">Biển số xe <span class="text-danger">(Lưu ý: Chỉ được nhập 1 lần duy nhất)</span></label>
+                                <input asp-for="Biensoxe" class="form-control" placeholder="Nhập biển số xe" />
+                                <span asp-validation-for="Biensoxe" class="text-danger"></span>
                             </div>
-                            <div class="form-check form-check-inline">
-                                <input asp-for="Trangthaibaotri" type="radio" class="form-check-input" value="false">
-                                <label class="form-check-label" for="noradio">Không</label>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label">Hãng xe</label>
+                                        <select asp-for="MaHx" class="form-control" id="MaHx">
+                                            <option value="">Chọn hãng xe</option>
+                                            @foreach (var item in Model.HangXeList)
+                                            {
+                                                <option value="@item.Value">@item.Text</option>
+                                            }
+                                        </select>
+
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label">Mẫu xe</label>
+                                        <select asp-for="MaMx" class="form-control" id="MaMxSelect">
+                                            <option value="">Chọn mẫu xe</option>
+                                        </select>
+                                        <input type="hidden" asp-for="MaMx" id="MaMxHidden" />
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group form-check">
-                            <label class="form-check-label">Bạn có muốn giao xe tận nơi cho người thuê không?</label>
-                            <div class="form-check form-check-inline">
-                                <input asp-for="Giaoxetannoi" type="radio" class="form-check-input" value="true">
-                                <label class="form-check-label" for="yesradio">Có</label>
+                            <div class="form-group">
+                                <label class="control-label">Loại xe</label>
+                                <select asp-for="MaLoai" class="form-control" id="MaLoai">
+                                    <option value="">Chọn loại xe</option>
+                                    @foreach (var item in Model.LoaiXeList)
+                                    {
+                                        <option value="@item.Value">@item.Text</option>
+                                    }
+                                </select>
                             </div>
-                            <div class="form-check form-check-inline">
-                                <input asp-for="Giaoxetannoi" type="radio" class="form-check-input" value="false">
-                                <label class="form-check-label" for="noradio">Không</label>
+                            <div class="form-group">
+                                <label asp-for="Soghe" class="control-label">Số ghế</label>
+                                <input asp-for="Soghe" class="form-control" id="Soghe" placeholder="Nhập số ghế" />
+                                <span asp-validation-for="Soghe" class="text-danger"></span>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <input type="submit" value="Create" class="btn btn-primary" />
-                        </div>
-                    </form>
+                            <div class="form-group">
+                                <label asp-for="NamSx" class="control-label">Năm sản xuất</label>
+                                <input asp-for="NamSx" class="form-control" placeholder="Nhập năm sản xuất" />
+                                <span asp-validation-for="NamSx" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Loainhienlieu" class="control-label">Loại nhiên liệu</label>
+                                <input asp-for="Loainhienlieu" class="form-control" placeholder="VD: Xăng" />
+                                <span asp-validation-for="Loainhienlieu" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Muctieuthunhienlieu" class="control-label">Mức tiêu thụ nhiên liệu</label>
+                                <input asp-for="Muctieuthunhienlieu" class="form-control" placeholder="Nhập mức tiêu thụ nhiên liệu" />
+                                <span asp-validation-for="Muctieuthunhienlieu" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Giathue" class="control-label">Giá thuê</label>
+                                <input asp-for="Giathue" class="form-control" placeholder="Nhập giá thuê" />
+                                <span asp-validation-for="Giathue" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">Khu vực cho thuê xe</label>
+                                <select asp-for="Makv" class="form-control" id="Makv">
+                                    <option value="">Chọn khu vực</option>
+                                    @foreach (var item in Model.KhuVucList)
+                                    {
+                                        <option value="@item.Value">@item.Text</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Diachixe" class="control-label">Địa chỉ cho thuê xe</label>
+                                <textarea asp-for="Diachixe" class="form-control" rows="3" placeholder="Nhập địa chỉ" required></textarea>
+                                <span asp-validation-for="Diachixe" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Dieukhoanthuexe" class="control-label">Điều khoản thuê xe</label>
+                                <textarea asp-for="Dieukhoanthuexe" class="form-control" rows="3" placeholder="Nhập điều khoản thuê xe" required></textarea>
+                                <span asp-validation-for="Dieukhoanthuexe" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="MotaDacDiemChucNang" class="control-label">Đặc điểm chức năng của xe</label>
+                                <textarea asp-for="MotaDacDiemChucNang" class="form-control" rows="3" placeholder="Nhập đặc điểm chức năng của xe" required></textarea>
+                                <span asp-validation-for="MotaDacDiemChucNang" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">Hình đại diện của xe</label>
+                                <input type="file" name="Hinh" id="HinhInput" class="form-control-file" />
+                                <img id="previewHinhDaiDienXe" src="#" alt="Ảnh trước" style="max-width: 200px; margin-top: 10px;" />
+                                <span class="text-danger">@ViewData["HinhErrorMessage"]</span>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">Hình ảnh khác (nếu có)</label>
+                                <input type="file" name="HinhAnhXe" onchange="previewImages(this, 'previewHinhAnhXe')" multiple class="form-control-file" />
+                                <div id="previewHinhAnhXe" class="mt-2"></div>
+                            </div>
+                            <div class="form-group text-center">
+                                <button type="submit" class="btn btn-primary">Cho thuê xe</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const maHxSelect = document.getElementById("MaHx");
+            const maMxSelect = document.getElementById("MaMxSelect");
+            const maMxHidden = document.getElementById("MaMxHidden");
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-<script>
-    var selectElement = document.getElementById('MaHx');
-    selectElement.addEventListener('change', function () {
-        var selectedBrandId = selectElement.value;
-        if (selectedBrandId) {
-            // Gửi yêu cầu AJAX để lấy danh sách mẫu xe dựa trên hãng xe được chọn
-            $.ajax({
-                url: '/XeKH/GetModelsByBrand', // URL của phương thức AJAX
-                type: 'GET',
-                data: { brandId: selectedBrandId }, // Dữ liệu gửi đi (ID của hãng xe)
-                success: function (response) {
-                    console.log(response); // Kiểm tra dữ liệu trả về từ phản hồi AJAX
-                    var options = '<option value="">Chọn mẫu xe</option>';
-                    response.forEach(function (item) {
-                        options += '<option value="' + item.maMx + '">' + item.tenMx + '</option>';
+            maHxSelect.addEventListener("change", () => {
+                const selectedMaHx = maHxSelect.value;
+                fetch(`/XeKH/GetMauXeList?maHx=${selectedMaHx}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        maMxSelect.innerHTML = '<option value="">Chọn mẫu xe</option>';
+                        data.forEach(mauXe => {
+                            maMxSelect.innerHTML += `<option value="${mauXe.value}">${mauXe.text}</option>`;
+                        });
+                        const selectedMx = maMxSelect.value;
+                        maMxHidden.value = selectedMx; // Cập nhật giá trị của trường ẩn
                     });
-                    $('#MaMx').html(options); // Cập nhật dropdownlist mẫu xe
-                },
-                error: function () {
-                    alert('Đã xảy ra lỗi khi tải danh sách mẫu xe.');
+            });
+            maMxSelect.addEventListener("change", () => {
+                const selectedMx = maMxSelect.value;
+                maMxHidden.value = selectedMx; // Cập nhật giá trị của trường ẩn khi người dùng thay đổi dropdown
+            });
+        });
+        document.addEventListener("DOMContentLoaded", () => {
+            const sogheInput = document.getElementById("Soghe");
+            sogheInput.addEventListener("keydown", (event) => {
+                const value = parseInt(sogheInput.value);
+                if (!/^\d$/.test(event.key) || (value === 0 && event.key === "ArrowDown")) {
+                    event.preventDefault();
                 }
             });
-        } else {
-            // Nếu không chọn hãng xe, đặt lại dropdownlist mẫu xe trống
-            $('#MaMx').html('<option value="">Chọn mẫu xe</option>');
+            sogheInput.addEventListener("input", () => {
+                sogheInput.value = Math.max(parseInt(sogheInput.value), 0);
+            });
+        });
+        document.getElementById('HinhInput').addEventListener('change', function () {
+            previewImage(this);
+        });
+        function previewImage(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#previewHinhDaiDienXe').attr('src', e.target.result);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
         }
-    });
-</script>
+        function previewImages(input, previewId) {
+            var previewContainer = document.getElementById(previewId);
+            previewContainer.innerHTML = ''; // Xóa bỏ các hình ảnh hiện có để cập nhật mới
+
+            if (input.files) {
+                var files = input.files;
+                for (var i = 0; i < files.length; i++) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        var img = document.createElement('img');
+                        img.src = e.target.result;
+                        img.style.maxWidth = '200px';
+                        img.style.marginTop = '10px';
+                        previewContainer.appendChild(img);
+                    }
+                    reader.readAsDataURL(files[i]);
+                }
+            }
+        }
+    </script>
+}

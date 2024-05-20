@@ -10,7 +10,6 @@ using System.Threading.Tasks;
 
 namespace Devoiture.Areas.Admin.Controllers
 {
-    [AdminAuthorize]
     [Authorize]
     public class PhanQuyenController : Controller
     {
@@ -124,7 +123,8 @@ namespace Devoiture.Areas.Admin.Controllers
                     new Website { TenWebsite = "Phân quyền tài khoản", MaQuyen = quyenMoi.MaQuyen, Quyentruycap = false, Create = false, Read = false, Update = false, Delete = false },
                     new Website { TenWebsite = "Chuyển quyền tài khoản", MaQuyen = quyenMoi.MaQuyen, Quyentruycap = false, Create = false, Read = false, Update = false, Delete = false },
                     new Website { TenWebsite = "Đăng kí cho thuê xe tự lái", MaQuyen = quyenMoi.MaQuyen, Quyentruycap = false, Create = false, Read = false, Update = false, Delete = false },
-                    new Website { TenWebsite = "Thuê xe tự lái", MaQuyen = quyenMoi.MaQuyen, Quyentruycap = false, Create = false, Read = false, Update = false, Delete = false }
+                    new Website { TenWebsite = "Thuê xe tự lái", MaQuyen = quyenMoi.MaQuyen, Quyentruycap = false, Create = false, Read = false, Update = false, Delete = false },
+                    new Website { TenWebsite = "Đổi tên quyền", MaQuyen = quyenMoi.MaQuyen, Quyentruycap = false, Create = false, Read = false, Update = false, Delete = false }
                 };
                 _context.Websites.AddRange(websites);
                 _context.SaveChanges();
@@ -173,7 +173,7 @@ namespace Devoiture.Areas.Admin.Controllers
         public async Task<IActionResult> ChangeNameRole()
         {
             var danhSachQuyen = await _context.Quyens
-                .Where(q => q.MaQuyen != 1)
+                .Where(q => q.MaQuyen != 1) // Exclude admin role
                 .Select(q => new QuyenViewModel
                 {
                     MaQuyen = q.MaQuyen,
@@ -206,7 +206,17 @@ namespace Devoiture.Areas.Admin.Controllers
                 return RedirectToAction(nameof(PhanQuyenRole));
             }
 
-            return View(viewModel);
+            // If ModelState is not valid, reload the list of roles to ensure the dropdown is populated
+            viewModel.DanhSachQuyen = await _context.Quyens
+                .Where(q => q.MaQuyen != 1)
+                .Select(q => new QuyenViewModel
+                {
+                    MaQuyen = q.MaQuyen,
+                    TenQuyen = q.TenQuyen
+                })
+                .ToListAsync();
+
+            return View("~/Areas/Admin/Views/PhanQuyen/ChangeNameRole.cshtml", viewModel);
         }
     }
 }

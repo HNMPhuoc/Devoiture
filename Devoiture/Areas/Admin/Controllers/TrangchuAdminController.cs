@@ -6,7 +6,6 @@ using System.Security.Claims;
 
 namespace Devoiture.Areas.Admin.Controllers
 {
-    [ManagerAuthorize]
     [Authorize]
     public class TrangchuAdminController : Controller
     {

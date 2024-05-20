@@ -39,8 +39,6 @@ public partial class Xe
 
     public bool Trangthaibaotri { get; set; }
 
-    public bool Giaoxetannoi { get; set; }
-
     public virtual Taikhoan EmailNavigation { get; set; } = null!;
 
     public virtual ICollection<HinhAnhXe> HinhAnhXes { get; set; } = new List<HinhAnhXe>();

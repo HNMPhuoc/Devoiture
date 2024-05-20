@@ -178,6 +178,16 @@ namespace Devoiture.Helpers
                         context.Result = new ViewResult { ViewName = "AccessDenied" };
                         return;
                     }
+                    if (action == "ChangeNameRole" && !HasPermission("Đổi tên quyền", "Quyentruycap"))
+                    {
+                        context.Result = new ViewResult { ViewName = "AccessDenied" };
+                        return;
+                    }
+                    if (action == "ChangeNameRole" && !HasPermission("Đổi tên quyền", "Update"))
+                    {
+                        context.Result = new ViewResult { ViewName = "AccessDenied" };
+                        return;
+                    }
                     break;
                 
             }

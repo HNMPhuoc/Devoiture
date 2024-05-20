@@ -9,7 +9,7 @@ namespace Devoiture.ViewModel
         public string Email { get; set; }
         [Required(ErrorMessage = "Vui lòng nhập mật khẩu")]
         [RegularExpression(@"^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,}$",
-            ErrorMessage = "Mật khẩu phải có ít nhất 1 ký tự hoa, 1 ký tự thường, 1 ký tự đặc biệt, 1 số, và ít nhất 8 ký tự.")]
+            ErrorMessage = "Mật khẩu không hợp lệ")]
         public string Matkhau { get; set; }
     }
 }

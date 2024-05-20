@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Devoiture.Controllers
 {
+    [Authorize]
     public class ThuexeController : Controller
     {
         [Authorize]

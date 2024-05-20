@@ -32,6 +32,10 @@ namespace Devoiture.Helpers
                 .ForMember(dest => dest.SoCccd, opt => opt.MapFrom(src => src.SoCccd))
                 .ForMember(dest => dest.HinhCccd, opt => opt.MapFrom(src => src.HinhCccd))
                 .ForMember(dest => dest.Soxe, opt => opt.MapFrom(src => src.Xes.Count));
+            CreateMap<Xe, SuaxecuaKH_VM>()
+                .ForMember(dest => dest.KhuVucList, opt => opt.Ignore()) // Không ánh xạ thuộc tính này vì chúng không được cần thiết
+                .ForMember(dest => dest.MauXeList, opt => opt.Ignore()) // Tương tự như trên
+                .ForMember(dest => dest.LoaiXeList, opt => opt.Ignore()); // Tương tự như trên
         }
     }
 }

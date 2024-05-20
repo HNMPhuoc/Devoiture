@@ -7,7 +7,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Devoiture.Areas.Admin.Controllers
 {
-    [ManagerAuthorize]
     [Authorize]
     public class DuyetXeController : Controller
     {
@@ -77,7 +76,6 @@ namespace Devoiture.Areas.Admin.Controllers
                 Soghe = xe.Soghe,
                 Muctieuthunhienlieu = xe.Muctieuthunhienlieu,
                 Diachixe = xe.Diachixe,
-                Giaoxetannoi = xe.Giaoxetannoi,
                 Dieukhoanthuexe = xe.Dieukhoanthuexe,
                 MotaDacDiemChucNang = xe.MotaDacDiemChucNang,
                 Loainhienlieu = xe.Loainhienlieu,

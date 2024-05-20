@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using Devoiture.Controllers;
-using Devoiture.Helpers;
 
 namespace Devoiture.ViewModel
 {
@@ -31,24 +31,23 @@ namespace Devoiture.ViewModel
         [Required(ErrorMessage = "Vui lòng cung cấp địa chỉ xe")]
         public string Diachixe { get; set; }
 
-        public bool Giaoxetannoi { get; set; }
-
+        [Display(Name = "Hình ảnh xe")]
+        public IFormFile HinhAnhXe { get; set; }
+        [Required(ErrorMessage = "Vui lòng cung cấp điều khoản thuê xe của bạn")]
         public string? Dieukhoanthuexe { get; set; }
 
         [Required(ErrorMessage = "Vui lòng cung cấp thông tin đặc điểm, chức năng của xe")]
         public string MotaDacDiemChucNang { get; set; }
 
-
         [Required(ErrorMessage = "Vui lòng cung cấp thông tin loại nhiên liệu xe đang dùng")]
         public string Loainhienlieu { get; set; }
 
-
-        public bool Trangthaibaotri { get; set; }
 
         [Required(ErrorMessage = "Vui lòng chọn khu vực xe đang được cất giữ")]
         public int Makv { get; set; }
 
         public int? MaHx { get; set; }
+
 
         public List<SelectListItem>? HangXeList { get; set; }
         public List<SelectListItem>? KhuVucList { get; set; }

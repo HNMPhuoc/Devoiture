@@ -8,7 +8,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Devoiture.Areas.Admin.Controllers
 {
-    [ManagerAuthorize]
     [Authorize]
     public class QLNhanvienController : Controller
     {

@@ -10,7 +10,6 @@ using Devoiture.Helpers;
 
 namespace Devoiture.Controllers
 {
-    [AllowAnonymous]
     public class KhachhangController : Controller
     {
         private readonly Devoiture1Context _context;
@@ -64,7 +63,9 @@ namespace Devoiture.Controllers
             ViewBag.ReturnUrl = ReturnUrl;
             if (ModelState.IsValid)
             {
-                var kh = _context.Taikhoans.SingleOrDefault(p => p.Email.ToLower() == model.Email.ToLower());
+                var kh = await _context.Taikhoans
+                        .Include(tk => tk.IdQuyenNavigation)
+                        .SingleOrDefaultAsync(p => p.Email.ToLower() == model.Email.ToLower());
                 if (kh == null)
                 {
                     ModelState.AddModelError("loi", "Không tồn tại email này");
@@ -96,7 +97,11 @@ namespace Devoiture.Controllers
                             HttpContext.Session.SetString(MySettings.ACCOUNT_KEY, kh.Email);
                             HttpContext.Session.SetString(MySettings.ACCOUNT_NAME, kh.Username);
                             HttpContext.Session.SetInt32(MySettings.ACCOUNT_ROLE, kh.IdQuyen);
-                            if(kh.HinhDaiDien != null)
+                            if (kh.IdQuyenNavigation != null)
+                            {
+                                HttpContext.Session.SetString(MySettings.ACCOUNT_ROLENAME, kh.IdQuyenNavigation.TenQuyen);
+                            }
+                            if (kh.HinhDaiDien != null)
                             {
                                 HttpContext.Session.SetString(MySettings.ACCOUNT_AVATAR, kh.HinhDaiDien);
                             }                                

@@ -19,7 +19,6 @@
 
         public string Diachixe { get; set; }
 
-        public bool Giaoxetannoi { get; set; }
 
         public string? Dieukhoanthuexe { get; set; }
 

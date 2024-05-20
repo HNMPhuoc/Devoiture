@@ -7,7 +7,6 @@ using System.Diagnostics;
 
 namespace Devoiture.Controllers
 {
-    [AllowAnonymous]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -22,7 +21,7 @@ namespace Devoiture.Controllers
         public IActionResult Index()
         {
             var dsxe = _context.Xes
-                .Where(p => p.Hide == false && p.TrangthaiDuyet == true)
+                .Where(p => p.Hide == false && p.TrangthaiDuyet == true && p.Trangthaibaotri == false)
                 .Select(x => new DanhsachxeKH_VM
                 {
                     Biensoxe = x.Biensoxe,
