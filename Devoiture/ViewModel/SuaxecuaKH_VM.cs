@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Collections.Generic;
 
 namespace Devoiture.ViewModel
 {
@@ -28,14 +29,19 @@ namespace Devoiture.ViewModel
 
         public string Loainhienlieu { get; set; }
 
-        public string Hinhanh {  get; set; }
+        public string? Hinhanh { get; set; }
 
-        public bool Trangthaibaotri { get; set; }
+        public List<string>? HinhAnhXe { get; set; }
 
         public int Makv { get; set; }
 
         public List<SelectListItem>? KhuVucList { get; set; }
         public List<SelectListItem>? MauXeList { get; set; }
         public List<SelectListItem>? LoaiXeList { get; set; }
+
+        public SuaxecuaKH_VM()
+        {
+            HinhAnhXe = new List<string>();
+        }
     }
 }

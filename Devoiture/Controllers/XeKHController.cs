@@ -125,58 +125,127 @@ namespace Devoiture.Controllers
             return Json(mauXeList);
         }
         [HttpGet]
-        [HttpGet]
         public IActionResult SuaXe(string biensx)
         {
-            var suaxe = _context.Xes.FirstOrDefault(p => p.Biensoxe == biensx);
-            var model = _imapper.Map<SuaxecuaKH_VM>(suaxe);
-            LoadDropdownLists1(model); // Nếu cần load dropdown lists
+            var suaxe = _context.Xes
+                    .Include(x => x.HinhAnhXes) // Include related images
+                    .FirstOrDefault(p => p.Biensoxe == biensx);
+            if (suaxe == null)
+            {
+                return NotFound(); // Handle the case where the car is not found
+            }
+            var model = new SuaxecuaKH_VM
+            {
+                Biensoxe = suaxe.Biensoxe,
+                MaMx = suaxe.MaMx,
+                MaLoai = suaxe.MaLoai,
+                Giathue = suaxe.Giathue,
+                NamSx = suaxe.NamSx,
+                Soghe = suaxe.Soghe,
+                Muctieuthunhienlieu = suaxe.Muctieuthunhienlieu,
+                Diachixe = suaxe.Diachixe,
+                Dieukhoanthuexe = suaxe.Dieukhoanthuexe,
+                MotaDacDiemChucNang = suaxe.MotaDacDiemChucNang,
+                Loainhienlieu = suaxe.Loainhienlieu,
+                Makv = suaxe.Makv,
+                Hinhanh = suaxe.Hinhanh,
+                HinhAnhXe = suaxe.HinhAnhXes.Select(h => h.Hinh).ToList() // Load images from database
+            };
+            LoadDropdownLists1(model); // Load dropdown lists
             return View(model);
         }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult SuaXe(SuaxecuaKH_VM model, IFormFile Hinh)
+        public IActionResult SuaXe(SuaxecuaKH_VM model, List<IFormFile> HinhAnhMoi)
         {
             if (!ModelState.IsValid)
             {
-                LoadDropdownLists1(model); // Nếu cần load dropdown lists
-                return View(model);
+                var suaxe1 = _context.Xes
+                            .Include(x => x.HinhAnhXes) // Include related images
+                            .FirstOrDefault(p => p.Biensoxe == model.Biensoxe);
+                if (suaxe1 == null)
+                {
+                    return NotFound(); // Handle the case where the car is not found
+                }
+                var viewModel = new SuaxecuaKH_VM
+                {
+                    Biensoxe = suaxe1.Biensoxe,
+                    MaMx = suaxe1.MaMx,
+                    MaLoai = suaxe1.MaLoai,
+                    Giathue = suaxe1.Giathue,
+                    NamSx = suaxe1.NamSx,
+                    Soghe = suaxe1.Soghe,
+                    Muctieuthunhienlieu = suaxe1.Muctieuthunhienlieu,
+                    Diachixe = suaxe1.Diachixe,
+                    Dieukhoanthuexe = suaxe1.Dieukhoanthuexe,
+                    MotaDacDiemChucNang = suaxe1.MotaDacDiemChucNang,
+                    Loainhienlieu = suaxe1.Loainhienlieu,
+                    Makv = suaxe1.Makv,
+                    Hinhanh = suaxe1.Hinhanh,
+                    HinhAnhXe = suaxe1.HinhAnhXes.Select(h => h.Hinh).ToList()
+                };
+                LoadDropdownLists1(viewModel); // Nếu cần load dropdown lists
+                return View(viewModel);
             }
-
-            var suaxe = _imapper.Map<Xe>(model);
-            if (Hinh != null)
+            var suaxe = _context.Xes.Include(x => x.HinhAnhXes).FirstOrDefault(p => p.Biensoxe == model.Biensoxe);
+            if (suaxe == null)
             {
-                suaxe.Hinhanh = MyUtil.UploadHinh("Xe", Hinh);
+                return NotFound(); // Xử lý trường hợp không tìm thấy xe
             }
-            _context.Update(suaxe);
-            _context.SaveChanges();
-            return RedirectToAction("Index", "Home");
-        }
 
+            // Cập nhật thông tin của xe
+            suaxe.MaLoai = model.MaLoai;
+            suaxe.MaMx = model.MaMx;
+            suaxe.Giathue = model.Giathue;
+            suaxe.NamSx = model.NamSx;
+            suaxe.Soghe = model.Soghe;
+            suaxe.Muctieuthunhienlieu = model.Muctieuthunhienlieu;
+            suaxe.Diachixe = model.Diachixe;
+            suaxe.Dieukhoanthuexe = model.Dieukhoanthuexe;
+            suaxe.MotaDacDiemChucNang = model.MotaDacDiemChucNang;
+            suaxe.Loainhienlieu = model.Loainhienlieu;
+            suaxe.Makv = model.Makv;
+
+            // Xóa các hình ảnh cũ không còn được sử dụng nữa
+            _context.HinhAnhXes.RemoveRange(suaxe.HinhAnhXes);
+
+            // Lưu các hình ảnh mới vào cơ sở dữ liệu và cập nhật liên kết với xe
+            foreach (var hinhAnh in HinhAnhMoi)
+            {
+                var hinhAnhXe = new HinhAnhXe
+                {
+                    Hinh = MyUtil.UploadHinh("Xe", hinhAnh),
+                    Biensoxe = suaxe.Biensoxe
+                };
+                _context.HinhAnhXes.Add(hinhAnhXe);
+            }
+
+            // Cập nhật ảnh của xe nếu có ảnh mới
+            if (HinhAnhMoi.Any())
+            {
+                suaxe.Hinhanh = MyUtil.UploadHinh("Xe", HinhAnhMoi.First());
+            }
+
+            _context.SaveChanges();
+            return RedirectToAction("DanhsachxecuaKH");
+        }
         private void LoadDropdownLists1(SuaxecuaKH_VM model)
         {
-            model.LoaiXeList = _context.LoaiXes
-                                        .Select(x => new SelectListItem
-                                        {
-                                            Value = x.MaLoai.ToString(),
-                                            Text = x.TenLoai
-                                        })
-                                        .ToList();
-            model.KhuVucList = _context.Khuvucs
-                                        .Select(x => new SelectListItem
-                                        {
-                                            Value = x.MaKv.ToString(),
-                                            Text = x.TenKv
-                                        })
-                                        .ToList();
-            model.MauXeList = _context.MauXes
-                                        .Select(x => new SelectListItem
-                                        {
-                                            Value = x.MaMx.ToString(),
-                                            Text = x.TenMx
-                                        })
-                                        .ToList();
+            model.KhuVucList = _context.Khuvucs.Select(kv => new SelectListItem
+            {
+                Value = kv.MaKv.ToString(),
+                Text = kv.TenKv
+            }).ToList();
+            model.MauXeList = _context.MauXes.Select(mx => new SelectListItem
+            {
+                Value = mx.MaMx.ToString(),
+                Text = mx.TenMx
+            }).ToList();
+            model.LoaiXeList = _context.LoaiXes.Select(lx => new SelectListItem
+            {
+                Value = lx.MaLoai.ToString(),
+                Text = lx.TenLoai
+            }).ToList();
         }
     }
 }

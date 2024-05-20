@@ -6,6 +6,10 @@ namespace Devoiture.Controllers
     [Authorize]
     public class ThuexeController : Controller
     {
+        public ThuexeController()
+        {
+
+        }
         [Authorize]
         public IActionResult Thue()
         {

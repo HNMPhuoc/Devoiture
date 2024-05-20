@@ -16,13 +16,15 @@
                             <input readonly asp-for="Biensoxe" class="form-control" />
                             <span asp-validation-for="Biensoxe" class="text-danger"></span>
                         </div>
-                        <div class="form-group">
-                            <label class="control-label">Mẫu xe</label>
-                            <select asp-for="MaMx" class="form-control" id="MaMx" name="MaMx" asp-items="Model.MauXeList"></select>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label">Loại xe</label>
-                            <select asp-for="MaLoai" class="form-control" asp-items="@Model.LoaiXeList"></select>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label class="control-label">Mẫu xe</label>
+                                <select asp-for="MaMx" class="form-control" id="MaMx" name="MaMx" asp-items="Model.MauXeList"></select>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label class="control-label">Loại xe</label>
+                                <select asp-for="MaLoai" class="form-control" asp-items="Model.LoaiXeList"></select>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label">Giá thuê xe</label>
@@ -43,24 +45,24 @@
                             <label class="control-label">Mức tiêu thụ nhiên liệu</label>
                             <input asp-for="Muctieuthunhienlieu" class="form-control" />
                             <span asp-validation-for="Muctieuthunhienlieu" class="text-danger"></span>
-                        </div>                       
+                        </div>
                         <div class="form-group">
                             <label class="control-label">Khu vực</label>
                             <select asp-for="Makv" class="form-control" asp-items="Model.KhuVucList"></select>
                         </div>
                         <div class="form-group">
                             <label class="control-label">Địa chỉ xe</label>
-                            <input asp-for="Diachixe" class="form-control" />
+                            <textarea asp-for="Diachixe" class="form-control" style="height: 100px;"></textarea>
                             <span asp-validation-for="Diachixe" class="text-danger"></span>
                         </div>
                         <div class="form-group">
                             <label class="control-label">Điều khoản thuê xe</label>
-                            <input asp-for="Dieukhoanthuexe" class="form-control" />
+                            <textarea asp-for="Dieukhoanthuexe" class="form-control" style="height: 100px;"></textarea>
                             <span asp-validation-for="Dieukhoanthuexe" class="text-danger"></span>
                         </div>
                         <div class="form-group">
                             <label class="control-label">Đặc điểm chức năng của xe</label>
-                            <input asp-for="MotaDacDiemChucNang" class="form-control" />
+                            <textarea asp-for="MotaDacDiemChucNang" class="form-control" style="height: 100px;"></textarea>
                             <span asp-validation-for="MotaDacDiemChucNang" class="text-danger"></span>
                         </div>
                         <div class="form-group">
@@ -70,39 +72,29 @@
                         </div>
                         <div class="form-group">
                             <label class="control-label">Hình đại diện xe</label>
-                            <input type="file" name="Hinh" class="form-control" />
+                            <input type="file" name="Hinh" id="HinhInput" class="form-control" />
                             @if (!string.IsNullOrEmpty(Model.Hinhanh))
                             {
-                                <img src="~/images/Xe/@Model.Hinhanh" alt="Hình ảnh xe" style="max-width:150px;max-height:150px;border-radius:7px" />
+                                <img id="previewHinhDaiDienXe" src="~/images/Xe/@Model.Hinhanh" alt="Hình ảnh xe" style="max-width:150px;max-height:150px;border-radius:7px" />
                             }
                         </div>
-                        <div class="form-group form-check">
-                            <label class="form-check-label">Bạn có đang bảo trì xe không?</label>
-                            <div class="form-check form-check-inline">
-                                <input asp-for="Trangthaibaotri" type="radio" class="form-check-input" value="true">
-                                <label class="form-check-label" for="yesradio">Có</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input asp-for="Trangthaibaotri" type="radio" class="form-check-input" value="false">
-                                <label class="form-check-label" for="noradio">Không</label>
-                            </div>
-                        </div>
-                        <div class="form-group form-check">
-                            <label class="form-check-label">Bạn có muốn giao xe tận nơi cho người thuê không?</label>
-                            <div class="form-check form-check-inline">
-                                <input asp-for="Giaoxetannoi" type="radio" class="form-check-input" value="true">
-                                <label class="form-check-label" for="yesradio">Có</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input asp-for="Giaoxetannoi" type="radio" class="form-check-input" value="false">
-                                <label class="form-check-label" for="noradio">Không</label>
+                        <div class="form-group">
+                            <label class="control-label">Hình ảnh khác</label>
+                            <input type="file" name="HinhAnhMoi" class="form-control" onchange="previewImages(this, 'previewHinhAnhXe')" multiple />
+                            <div id="previewHinhAnhXe" class="mt-2">
+                                @foreach (var hinhAnh in Model.HinhAnhXe)
+                                {
+                                    <div class="preview-image">
+                                        <img src="~/images/Xe/@hinhAnh" alt="Hình ảnh xe" style="max-width:150px;max-height:150px;border-radius:7px" />
+                                    </div>
+                                }
                             </div>
                         </div>
                         <div class="form-group">
-                            <input type="submit" value="Save" class="btn btn-primary" />
+                            <input type="submit" value="Save changes" class="btn btn-primary" />
                         </div>
                         <div class="form-group">
-                            <a asp-action="DanhsachxecuaKH" asp-controller="XeKH">Back to List</a>
+                            <a asp-action="DanhsachxecuaKH" asp-controller="XeKH" class="btn btn-secondary">Back to List</a>
                         </div>
                     </form>
                 </div>
@@ -111,3 +103,57 @@
     </div>
 </div>
 
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const sogheInput = document.getElementById("Soghe");
+            sogheInput.addEventListener("keydown", (event) => {
+                const value = parseInt(sogheInput.value);
+                if (!/^\d$/.test(event.key) || (value === 0 && event.key === "ArrowDown")) {
+                    event.preventDefault();
+                }
+            });
+            sogheInput.addEventListener("input", () => {
+                sogheInput.value = Math.max(parseInt(sogheInput.value), 0);
+            });
+        });
+
+        document.getElementById('HinhInput').addEventListener('change', function () {
+            previewImage(this);
+        });
+
+        function previewImage(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#previewHinhDaiDienXe').attr('src', e.target.result);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function previewImages(input, previewId) {
+            var previewContainer = document.getElementById(previewId);
+            previewContainer.innerHTML = ''; // Xóa bỏ các hình ảnh hiện có để cập nhật mới
+
+            if (input.files) {
+                var files = input.files;
+                for (var i = 0; i < files.length; i++) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        var img = document.createElement('img');
+                        img.src = e.target.result;
+                        img.style.maxWidth = '200px';
+                        img.style.marginTop = '10px';
+
+                        var div = document.createElement('div'); // Tạo một div mới cho mỗi hình ảnh
+                        div.appendChild(img);
+
+                        previewContainer.appendChild(div); // Thêm div vào previewContainer
+                    }
+                    reader.readAsDataURL(files[i]);
+                }
+            }
+        }
+    </script>
+}
