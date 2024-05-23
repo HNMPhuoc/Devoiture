@@ -1,56 +1,55 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
+using System.Collections.Generic;
 
 namespace Devoiture.ViewModel
 {
     public class Thuexe_VM
     {
-        public int MaHt { get; set; }
-
-        public DateTime Ngaynhanxe { get; set; }
-
-        public DateTime Ngaytraxe { get; set; }
-
-        public int Songaythue { get; set; }
-
-        public double TienCoc { get; set; }
-
-        public double Tongtienthue { get; set; }
-
-        public string? Diadiemnhanxe { get; set; }
-
-        public bool? Chapnhan { get; set; }
-
-        public double Baohiemxe { get; set; }
-
-        public string Biensoxe { get; set; }
-
-        public int MaLoai { get; set; }
-
-        public int MaMx { get; set; }
-
-        public double Giathue { get; set; }
-
-        public string NamSx { get; set; }
-
-        public int Soghe { get; set; }
-
-        public double Muctieuthunhienlieu { get; set; }
-
-        public string Diachixe { get; set; }
-
-        public bool Giaoxetannoi { get; set; }
-
-        public string? Dieukhoanthuexe { get; set; }
-
-        public string MotaDacDiemChucNang { get; set; }
-
-        public string Loainhienlieu { get; set; }
-
+        public string CarModel { get; set; }
         public string Hinhanh { get; set; }
+        public List<string> HinhAnhList { get; set; }
+        public string NamSx { get; set; }
+        public string MotaDacDiemChucNang { get; set; }
+        public string Loainhienlieu { get; set; }
+        public double Muctieuthunhienlieu { get; set; }
+        public string Diachixe { get; set; }
+        public double Giathue { get; set; }
+        public int Soghe { get; set; }
+        public string? Dieukhoanthuexe { get; set; }
+        public double Baohiemthuexe 
+        { 
+            get
+            {
+                return Dongiathue * 0.09843205574912892;
+            }
+        }
 
-        public bool Trangthaibaotri { get; set; }
+        public DateTime Ngaynhanxe { get; set; } = DateTime.Now;
 
-        public int Makv { get; set; }
-        public List<SelectListItem>? HinhthucList { get; set; }
+        public DateTime Ngaytraxe { get; set; } = DateTime.Now.AddDays(1);
+
+        public int Songaythue
+        {
+            get
+            {
+                return (Ngaytraxe - Ngaynhanxe).Days;
+            }
+        }
+
+        public double Dongiathue
+        {
+            get
+            {
+                return Math.Round(Giathue * Songaythue,2);
+            }
+        }
+        public double Tongtienthue 
+        {
+            get
+            {
+                return Dongiathue + Baohiemthuexe;
+            }
+        }
     }
 }

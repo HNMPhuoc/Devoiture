@@ -35,6 +35,8 @@ public partial class Taikhoan
 
     public bool? Lock { get; set; }
 
+    public virtual ICollection<HoadonThuexe> HoadonThuexes { get; set; } = new List<HoadonThuexe>();
+
     public virtual Quyen IdQuyenNavigation { get; set; } = null!;
 
     public virtual ICollection<Xe> Xes { get; set; } = new List<Xe>();

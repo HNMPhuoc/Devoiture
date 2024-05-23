@@ -8,7 +8,7 @@
 
 <div class="container-fluid py-5">
     <p>
-        <a asp-action="ThemXe">Cho thuê xe</a>
+        <a asp-action="ThemXe" class="btn btn-primary">Cho thuê xe</a>
     </p>
     <div class="container pt-5 pb-3">
         <div class="row">
@@ -45,9 +45,34 @@
                             </div>
                         </div>
                         <a class="btn btn-primary px-3" asp-action="SuaXe" asp-route-biensx="@item.Biensoxe">Chi tiết xe</a>
+                        <form asp-action="CapnhatBaotri" method="post" class="d-inline">
+                            <input type="hidden" name="biensoxe" value="@item.Biensoxe" />
+                            <button type="submit" class="btn @(item.Trangthaibaotri ? "btn-secondary" : "btn-success") px-3">
+                                @(item.Trangthaibaotri ? "Tắt bảo trì" : "Bảo trì")
+                            </button>
+                        </form>
+                        <form asp-action="CapnhatAnXe" method="post" class="d-inline">
+                            <input type="hidden" name="biensoxe" value="@item.Biensoxe" />
+                            <button type="submit" class="btn @(item.Hide ? "btn-danger" : "btn-warning") px-3">
+                                @(item.Hide ? "Hiện" : "Ẩn")
+                            </button>
+                        </form>
                     </div>
                 </div>
             }
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Hiển thị thông báo sau khi các form được submit
+            const urlParams = new URLSearchParams(window.location.search);
+            const successMessage = urlParams.get('successMessage');
+            if (successMessage) {
+                toastr.success(successMessage);
+            }
+        });
+    </script>
+}

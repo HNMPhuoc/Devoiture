@@ -21,9 +21,13 @@ public partial class Devoiture1Context : DbContext
 
     public virtual DbSet<Hinhthucthanhtoan> Hinhthucthanhtoans { get; set; }
 
-    public virtual DbSet<Hoadon> Hoadons { get; set; }
+    public virtual DbSet<HoadonThuexe> HoadonThuexes { get; set; }
+
+    public virtual DbSet<HopDongThueXe> HopDongThueXes { get; set; }
 
     public virtual DbSet<Khuvuc> Khuvucs { get; set; }
+
+    public virtual DbSet<LichChoThue> LichChoThues { get; set; }
 
     public virtual DbSet<LoaiXe> LoaiXes { get; set; }
 
@@ -32,6 +36,8 @@ public partial class Devoiture1Context : DbContext
     public virtual DbSet<Quyen> Quyens { get; set; }
 
     public virtual DbSet<Taikhoan> Taikhoans { get; set; }
+
+    public virtual DbSet<Trangthaithanhtoan> Trangthaithanhtoans { get; set; }
 
     public virtual DbSet<Website> Websites { get; set; }
 
@@ -85,11 +91,11 @@ public partial class Devoiture1Context : DbContext
                 .HasColumnName("TenHT");
         });
 
-        modelBuilder.Entity<Hoadon>(entity =>
+        modelBuilder.Entity<HoadonThuexe>(entity =>
         {
-            entity.HasKey(e => e.MaHd);
+            entity.HasKey(e => e.MaHd).HasName("PK_Hoadon");
 
-            entity.ToTable("Hoadon");
+            entity.ToTable("HoadonThuexe");
 
             entity.Property(e => e.MaHd).HasColumnName("MaHD");
             entity.Property(e => e.Biensoxe)
@@ -98,16 +104,55 @@ public partial class Devoiture1Context : DbContext
             entity.Property(e => e.Email)
                 .HasMaxLength(30)
                 .IsUnicode(false);
-            entity.Property(e => e.MaHt).HasColumnName("MaHT");
-            entity.Property(e => e.MaYc).HasColumnName("MaYC");
+            entity.Property(e => e.MaHdong).HasColumnName("MaHDong");
+            entity.Property(e => e.Matrangthai).HasColumnName("matrangthai");
             entity.Property(e => e.NgaylapHd)
                 .HasColumnType("datetime")
                 .HasColumnName("NgaylapHD");
 
-            entity.HasOne(d => d.Yeucauthuexe).WithMany(p => p.Hoadons)
-                .HasForeignKey(d => new { d.MaYc, d.MaHt, d.Email, d.Biensoxe })
+            entity.HasOne(d => d.BiensoxeNavigation).WithMany(p => p.HoadonThuexes)
+                .HasForeignKey(d => d.Biensoxe)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Hoadon__6C190EBB");
+                .HasConstraintName("FK_HoadonThuexe_Xe");
+
+            entity.HasOne(d => d.EmailNavigation).WithMany(p => p.HoadonThuexes)
+                .HasForeignKey(d => d.Email)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_HoadonThuexe_Taikhoan");
+
+            entity.HasOne(d => d.MaHdongNavigation).WithMany(p => p.HoadonThuexes)
+                .HasForeignKey(d => d.MaHdong)
+                .HasConstraintName("FK_HoadonThuexe_HopDongThueXe");
+
+            entity.HasOne(d => d.MatrangthaiNavigation).WithMany(p => p.HoadonThuexes)
+                .HasForeignKey(d => d.Matrangthai)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_HoadonThuexe_Trangthaithanhtoan");
+        });
+
+        modelBuilder.Entity<HopDongThueXe>(entity =>
+        {
+            entity.HasKey(e => e.MaHdong);
+
+            entity.ToTable("HopDongThueXe");
+
+            entity.Property(e => e.MaHdong).HasColumnName("MaHDong");
+            entity.Property(e => e.Chuki).HasMaxLength(100);
+            entity.Property(e => e.DieukhoantuChuXe).HasColumnType("ntext");
+            entity.Property(e => e.Email)
+                .HasMaxLength(30)
+                .IsUnicode(false);
+            entity.Property(e => e.MaYc).HasColumnName("MaYC");
+
+            entity.HasOne(d => d.MaHtNavigation).WithMany(p => p.HopDongThueXes)
+                .HasForeignKey(d => d.MaHt)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_HopDongThueXe_Hinhthucthanhtoan");
+
+            entity.HasOne(d => d.MaYcNavigation).WithMany(p => p.HopDongThueXes)
+                .HasForeignKey(d => d.MaYc)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_HopDongThueXe_Yeucauthuexe");
         });
 
         modelBuilder.Entity<Khuvuc>(entity =>
@@ -120,6 +165,30 @@ public partial class Devoiture1Context : DbContext
             entity.Property(e => e.TenKv)
                 .HasMaxLength(50)
                 .HasColumnName("TenKV");
+        });
+
+        modelBuilder.Entity<LichChoThue>(entity =>
+        {
+            entity.HasKey(e => e.MaLich);
+
+            entity.ToTable("LichChoThue");
+
+            entity.Property(e => e.Biensx)
+                .HasMaxLength(10)
+                .IsUnicode(false);
+            entity.Property(e => e.Idyc).HasColumnName("IDyc");
+            entity.Property(e => e.Ngaynhanxe).HasColumnType("datetime");
+            entity.Property(e => e.Ngaytraxe).HasColumnType("datetime");
+
+            entity.HasOne(d => d.BiensxNavigation).WithMany(p => p.LichChoThues)
+                .HasForeignKey(d => d.Biensx)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_LichChoThue_Xe");
+
+            entity.HasOne(d => d.IdycNavigation).WithMany(p => p.LichChoThues)
+                .HasForeignKey(d => d.Idyc)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_LichChoThue_Yeucauthuexe");
         });
 
         modelBuilder.Entity<LoaiXe>(entity =>
@@ -197,6 +266,18 @@ public partial class Devoiture1Context : DbContext
                 .HasConstraintName("FK_Taikhoan_Quyen");
         });
 
+        modelBuilder.Entity<Trangthaithanhtoan>(entity =>
+        {
+            entity.HasKey(e => e.MaTrangthaiHd);
+
+            entity.ToTable("Trangthaithanhtoan");
+
+            entity.Property(e => e.MaTrangthaiHd)
+                .ValueGeneratedNever()
+                .HasColumnName("MaTrangthaiHD");
+            entity.Property(e => e.NoiDung).HasColumnType("ntext");
+        });
+
         modelBuilder.Entity<Website>(entity =>
         {
             entity.HasKey(e => e.MaWebsite);
@@ -259,38 +340,30 @@ public partial class Devoiture1Context : DbContext
 
         modelBuilder.Entity<Yeucauthuexe>(entity =>
         {
-            entity.HasKey(e => new { e.MaYc, e.MaHt, e.Email, e.Biensoxe }).HasName("PK__Yeucauth__1BC4E27C7079633D");
+            entity.HasKey(e => e.MaYc).HasName("PK_Yeucauthuexe_1");
 
             entity.ToTable("Yeucauthuexe");
 
-            entity.Property(e => e.MaYc)
-                .ValueGeneratedOnAdd()
-                .HasColumnName("MaYC");
-            entity.Property(e => e.MaHt).HasColumnName("MaHT");
-            entity.Property(e => e.Email)
-                .HasMaxLength(30)
-                .IsUnicode(false);
+            entity.Property(e => e.MaYc).HasColumnName("MaYC");
             entity.Property(e => e.Biensoxe)
                 .HasMaxLength(10)
                 .IsUnicode(false);
             entity.Property(e => e.Diadiemnhanxe).HasMaxLength(100);
+            entity.Property(e => e.Email)
+                .HasMaxLength(30)
+                .IsUnicode(false);
             entity.Property(e => e.Ngaynhanxe).HasColumnType("datetime");
             entity.Property(e => e.Ngaytraxe).HasColumnType("datetime");
 
             entity.HasOne(d => d.BiensoxeNavigation).WithMany(p => p.Yeucauthuexes)
                 .HasForeignKey(d => d.Biensoxe)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Yeucauthu__Biens__693CA210");
+                .HasConstraintName("FK_Yeucauthuexe_Xe");
 
             entity.HasOne(d => d.EmailNavigation).WithMany(p => p.Yeucauthuexes)
                 .HasForeignKey(d => d.Email)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Yeucauthu__Email__66603565");
-
-            entity.HasOne(d => d.MaHtNavigation).WithMany(p => p.Yeucauthuexes)
-                .HasForeignKey(d => d.MaHt)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Yeucauthue__MaHT__6EF57B66");
+                .HasConstraintName("FK_Yeucauthuexe_Taikhoan");
         });
 
         OnModelCreatingPartial(modelBuilder);

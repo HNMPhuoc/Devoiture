@@ -56,10 +56,6 @@ namespace Devoiture.Controllers
             if (ModelState.IsValid)
             {
                 var kh = HttpContext.User.Claims.SingleOrDefault(p => p.Type == MySettings.ACCOUNT_KEY)?.Value;
-                if (string.IsNullOrEmpty(kh))
-                {
-                    return RedirectToAction("Login", "Account"); // Chuyển hướng nếu không có thông tin người dùng
-                }
                 var xe = _imapper.Map<Xe>(model);
                 xe.Email = kh;
                 xe.Hide = false;
@@ -246,6 +242,35 @@ namespace Devoiture.Controllers
                 Value = lx.MaLoai.ToString(),
                 Text = lx.TenLoai
             }).ToList();
+        }
+        [HttpPost]
+        public IActionResult CapnhatBaotri(string biensoxe)
+        {
+            var xe = _context.Xes.SingleOrDefault(x => x.Biensoxe == biensoxe);
+            if (xe == null)
+            {
+                return NotFound();
+            }
+            xe.Trangthaibaotri = !xe.Trangthaibaotri;
+            _context.SaveChanges();
+
+            TempData["successMessage"] = xe.Trangthaibaotri ? "Đã bật trạng thái bảo trì." : "Đã tắt trạng thái bảo trì.";
+            return RedirectToAction("DanhsachxecuaKH");
+        }
+        [HttpPost]
+        public IActionResult CapnhatAnXe(string biensoxe)
+        {
+            var xe = _context.Xes.SingleOrDefault(x => x.Biensoxe == biensoxe);
+            if (xe == null)
+            {
+                return NotFound();
+            }
+
+            xe.Hide = !xe.Hide;
+            _context.SaveChanges();
+
+            TempData["successMessage"] = xe.Hide ? "Đã ẩn xe." : "Đã hiện xe.";
+            return RedirectToAction("DanhsachxecuaKH");
         }
     }
 }

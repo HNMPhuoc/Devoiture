@@ -43,6 +43,10 @@ public partial class Xe
 
     public virtual ICollection<HinhAnhXe> HinhAnhXes { get; set; } = new List<HinhAnhXe>();
 
+    public virtual ICollection<HoadonThuexe> HoadonThuexes { get; set; } = new List<HoadonThuexe>();
+
+    public virtual ICollection<LichChoThue> LichChoThues { get; set; } = new List<LichChoThue>();
+
     public virtual LoaiXe MaLoaiNavigation { get; set; } = null!;
 
     public virtual MauXe MaMxNavigation { get; set; } = null!;

@@ -6,99 +6,171 @@
 
 @await Html.PartialAsync("_PageHeader")
 
-<h4>Khách hàng @Context.User.Identity.Name</h4>
+<h4>Chỉnh sửa thông tin cá nhân</h4>
 <hr />
-<!-- Profile KH Start -->
-<div class="container-fluid py-5">
-    <div class="container pt-5 pb-3">
-        <div class="col-lg-10 mb-2 mx-auto">
+
+<div class="container pt-5 pb-3">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
             <form asp-action="Editprofile" asp-controller="Khachhang" method="post" enctype="multipart/form-data">
-                <div class="col-lg-10 mb-2">
-                    <div class="contact-form bg-light mb-4 p-4">
-                        <div class="form-group">
-                            <label class="col-sm-3 col-form-label">Email</label>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="form-group row">
+                            <label for="inputEmail" class="col-sm-3 col-form-label">Email</label>
                             <div class="col-sm-9">
-                                <input readonly type="text" class="form-control" asp-for="@Model.Email">
+                                <input readonly type="text" class="form-control" id="inputEmail" value="@Model.Email">
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label class="col-sm-3 col-form-label">Username</label>
+                        <div class="form-group row">
+                            <label for="inputUsername" class="col-sm-3 col-form-label">Username</label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" asp-for="@Model.Username">
+                                <input type="text" class="form-control" id="inputUsername" value="@Model.Username">
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label class="col-sm-3 col-form-label">Họ và tên</label>
+                        <div class="form-group row">
+                            <label for="inputHoTen" class="col-sm-3 col-form-label">Họ và tên</label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" asp-for="@Model.HoTen">
+                                <input type="text" class="form-control" id="inputHoTen" value="@Model.HoTen">
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label class="col-sm-3 col-form-label">Số điện thoại</label>
+                        <div class="form-group row">
+                            <label for="inputSdt" class="col-sm-3 col-form-label">Số điện thoại</label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" asp-for="@Model.Sdt">
+                                <input type="text" class="form-control" id="inputSdt" value="@Model.Sdt">
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label class="col-sm-3 col-form-label">Ngày sinh</label>
+                        <div class="form-group row">
+                            <label for="inputNgsinh" class="col-sm-3 col-form-label">Ngày sinh</label>
                             <div class="col-sm-9">
-                                <div class="date mb-3" id="date1" data-target-input="nearest">
-                                    <input asp-for="@Model.Ngsinh" type="text" class="form-control p-4 datetimepicker-input"
-                                           data-target="#date1" data-toggle="datetimepicker" />
+                                <input type="date" class="form-control" id="inputNgsinh" value="@(Model.Ngsinh != null ? Model.Ngsinh.ToString("yyyy-MM-dd") : "")">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Giới tính</label>
+                            <div class="col-sm-9">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="Gioitinh" id="gioiTinhNam" value="true" @(Model.Gioitinh == true ? "checked" : "")>
+                                    <label class="form-check-label" for="gioiTinhNam">Nam</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="Gioitinh" id="gioiTinhNu" value="false" @(Model.Gioitinh == false ? "checked" : "")>
+                                    <label class="form-check-label" for="gioiTinhNu">Nữ</label>
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label class="mr-3">Giới tính:</label>
-                            <div class="form-check form-check-inline">
-                                <input asp-for="@Model.Gioitinh" type="radio" class="form-check-input" value="true">
-                                <label class="form-check-label" for="namradio">Nam</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input asp-for="@Model.Gioitinh" type="radio" class="form-check-input" value="false">
-                                <label class="form-check-label" for="nuradio">Nữ</label>
+                        <div class="form-group row">
+                            <label for="inputHinhDaiDien" class="col-sm-3 col-form-label">Hình đại diện</label>
+                            <div class="col-sm-9">
+                                <input type="file" class="form-control-file" id="inputHinhDaiDien" name="Hinh1" onchange="previewImage(this)">
+                                @if (!string.IsNullOrEmpty(Model.HinhDaiDien))
+                                {
+                                    <img id="previewHinhDaiDien" src="~/images/AnhDaiDien/@Model.HinhDaiDien" alt="Hình đại diện" style="max-width: 200px; max-height: 200px;" />
+                                }
+                                else
+                                {
+                                    <img id="previewHinhDaiDien" src="~/images/AnhDaiDien/userdefault.png" alt="Hình đại diện" style="max-width: 200px; max-height: 200px;" />
+                                }
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label class="col-sm-3 col-form-label">Số CCCD</label>
+                        <div class="form-group row">
+                            <label for="inputSoCccd" class="col-sm-3 col-form-label">Số CCCD</label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" asp-for="@Model.SoCccd" />
+                                <input type="text" class="form-control" id="inputSoCccd" name="SoCccd" value="@Model.SoCccd">
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label class="col-sm-3 col-form-label">Hình ảnh CCCD</label>
+                        <div class="form-group row">
+                            <label for="inputHinhCccd" class="col-sm-3 col-form-label">Hình ảnh CCCD</label>
                             <div class="col-sm-9">
-                                <input type="file" class="form-control" name="Hinh2" />
+                                <input type="file" class="form-control-file" id="inputHinhCccd" name="Hinh2" onchange="previewImageCccd(this)">
+                                @if (!string.IsNullOrEmpty(Model.HinhCccd))
+                                {
+                                    <img id="previewHinhCccd" src="~/images/AnhCCCD/@Model.HinhCccd" alt="CCCD" style="max-width: 200px; max-height: 200px;" />
+                                }
+                                else
+                                {
+                                    <img id="previewHinhCccd" src="~/images/AnhCCCD/cccdDefault.png" alt="CCCD" style="max-width: 200px; max-height: 200px;" />
+                                }
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label class="col-sm-3 col-form-label">Số GPLX A4</label>
+                        <div class="form-group row">
+                            <label for="inputSoGplxA4" class="col-sm-3 col-form-label">Số GPLX B2</label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" asp-for="@Model.SoGplxA4" />
+                                <input type="text" class="form-control" id="inputSoGplxB2" name="SoGplxB2"
+                                       value="@Model.SoGplxB2">
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label class="col-sm-3 col-form-label">Hình ảnh GPLX</label>
+                        <div class="form-group row">
+                            <label for="inputHinhGplx" class="col-sm-3 col-form-label">Hình ảnh GPLX</label>
                             <div class="col-sm-9">
-                                <input type="file" class="form-control" name="Hinh3" />
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-form-label">Hình đại diện</label>
-                            <div class="col-sm-9">
-                                <input type="file" class="form-control" name="Hinh1" />
+                                <input type="file" class="form-control-file" id="inputHinhGplx" name="Hinh3" onchange="previewImageGPLX(this)">
+                                @if (!string.IsNullOrEmpty(Model.HinhGplx))
+                                {
+                                    <img id="previewHinhGPLX" src="~/images/AnhGPLX/@Model.HinhGplx" alt="GPLX" style="max-width: 200px; max-height: 200px;" />
+                                }
+                                else
+                                {
+                                    <img id="previewHinhGPLX" src="~/images/AnhGPLX/gplxDefault.png" alt="GPLX" style="max-width: 200px; max-height: 200px;" />
+                                }
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-12 text-center">
-                    <button asp-action="Editprofile" class="btn btn-primary px-5" type="submit">
-                        Lưu
-                    </button>
-                    <button type="submit" class="btn btn-primary px-5" asp-action="Index" asp-controller="Home">Quay về trang chủ</button>
+                <div class="form-group mt-3">
+                    <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+                    <a class="btn btn-secondary" asp-action="Index" asp-controller="Home">Hủy</a>
                 </div>
             </form>
         </div>
     </div>
 </div>
-<!-- Profile KH End -->
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            // Initialize datetime picker
+            $('.datetimepicker-input').datetimepicker({
+                format: 'DD/MM/YYYY',
+                icons: {
+                    time: 'fa fa-clock',
+                    date: 'fa fa-calendar',
+                    up: 'fa fa-chevron-up',
+                    down: 'fa fa-chevron-down',
+                    previous: 'fa fa-chevron-left',
+                    next: 'fa fa-chevron-right',
+                    today: 'fa fa-calendar-check-o',
+                    clear: 'fa fa-trash',
+                    close: 'fa fa-times'
+                }
+            });
+        });
+        function previewImage(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#previewHinhDaiDien').attr('src', e.target.result);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function previewImageCccd(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#previewHinhCccd').attr('src', e.target.result);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function previewImageGPLX(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#previewHinhGPLX').attr('src', e.target.result);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
+}

@@ -13,7 +13,7 @@ namespace Devoiture.ViewModel
 
         public bool? Gioitinh { get; set; }
 
-        public string? SoGplxA4 { get; set; }
+        public string? SoGplxB2 { get; set; }
 
         public string? HinhGplx { get; set; }
 

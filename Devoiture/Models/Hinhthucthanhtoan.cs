@@ -9,5 +9,5 @@ public partial class Hinhthucthanhtoan
 
     public string TenHt { get; set; } = null!;
 
-    public virtual ICollection<Yeucauthuexe> Yeucauthuexes { get; set; } = new List<Yeucauthuexe>();
+    public virtual ICollection<HopDongThueXe> HopDongThueXes { get; set; } = new List<HopDongThueXe>();
 }

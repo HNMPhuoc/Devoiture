@@ -7,6 +7,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Devoiture.Helpers;
+using System.Data.SqlTypes;
 
 namespace Devoiture.Controllers
 {
@@ -224,7 +225,7 @@ namespace Devoiture.Controllers
             model.Username = editkh.Username;
             model.SoCccd = editkh.SoCccd;
             model.HoTen = editkh.HoTen;
-            model.SoGplxA4 = editkh.SoGplxB2;
+            model.SoGplxB2 = editkh.SoGplxB2;
             model.Ngsinh = editkh.Ngsinh;
             model.Gioitinh = editkh.Gioitinh;
             model.HinhDaiDien = editkh.HinhDaiDien;
@@ -237,18 +238,45 @@ namespace Devoiture.Controllers
         public IActionResult Editprofile(ProfileKH_VM model, IFormFile Hinh1, IFormFile Hinh2, IFormFile Hinh3)
         {
             var kh = HttpContext.User.Claims.SingleOrDefault(p => p.Type == MySettings.ACCOUNT_KEY).Value;
-            var editkh = _context.Taikhoans.FirstOrDefault(p => p.Email == kh);
-            editkh.Email = model.Email;
-            editkh.Sdt = model.Sdt;
-            editkh.Username = model.Username;
-            editkh.SoCccd = model.SoCccd;
-            editkh.HoTen = model.HoTen;
-            editkh.SoGplxB2 = model.SoGplxA4;
-            editkh.Ngsinh = model.Ngsinh;
-            editkh.Gioitinh = model.Gioitinh;
-            if(Hinh1 != null)
+            var editkh = _context.Taikhoans.FirstOrDefault(p => p.Email == kh); 
+            if (model.Username != null)
             {
-                model.HinhDaiDien = MyUtil.UploadHinh("AnhDaiDien",Hinh1);
+                editkh.Username = model.Username;
+            }
+            if(model.SoCccd != null)
+            {
+                editkh.SoCccd = model.SoCccd;
+            }
+            if (model.Sdt != null)
+            {
+                editkh.Sdt = model.Sdt;
+            }
+            if (model.HoTen != null)
+            {
+                editkh.HoTen = model.HoTen;
+            }
+            if (model.SoGplxB2 != null)
+            {
+                editkh.SoGplxB2 = model.SoGplxB2;
+            }
+            if (model.Gioitinh != null)
+            {
+                editkh.Gioitinh = model.Gioitinh;
+            }
+
+            if (model.Ngsinh != null && IsDateTimeValid(model.Ngsinh))
+            {
+                editkh.Ngsinh = model.Ngsinh;
+            }
+            else
+            {
+                ModelState.AddModelError("Ngsinh", "Ngày sinh không hợp lệ");
+            }
+
+            // Cập nhật hình ảnh nếu có
+            if (Hinh1 != null)
+            {
+                model.HinhDaiDien = MyUtil.UploadHinh("AnhDaiDien", Hinh1);
                 editkh.HinhDaiDien = model.HinhDaiDien;
             }
             if (Hinh2 != null)
@@ -261,8 +289,11 @@ namespace Devoiture.Controllers
                 model.HinhGplx = MyUtil.UploadHinh("AnhGPLX", Hinh3);
                 editkh.HinhGplxb2 = model.HinhGplx;
             }
+
             _context.Update(editkh);
             _context.SaveChanges();
+
+            // Cập nhật thông tin trong session nếu cần
             if (editkh.HinhDaiDien != null)
             {
                 HttpContext.Session.SetString(MySettings.ACCOUNT_AVATAR, editkh.HinhDaiDien);
@@ -271,7 +302,14 @@ namespace Devoiture.Controllers
             {
                 HttpContext.Session.SetString(MySettings.ACCOUNT_NAME, editkh.Username);
             }
-            return RedirectToAction("Index","Home");
+
+            return RedirectToAction("Index", "Home");
+        }
+
+        // Phương thức kiểm tra ngày hợp lệ
+        private bool IsDateTimeValid(DateTime dateTime)
+        {
+            return dateTime >= SqlDateTime.MinValue.Value && dateTime <= SqlDateTime.MaxValue.Value;
         }
     }
 }
