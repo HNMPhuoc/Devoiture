@@ -152,9 +152,9 @@ namespace Devoiture.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult SuaXe(SuaxecuaKH_VM model, List<IFormFile> HinhAnhMoi)
+        public IActionResult SuaXe(SuaxecuaKH_VM model, IFormFile Hinh,List<IFormFile> HinhAnhMoi)
         {
-            if (!ModelState.IsValid)
+            if (model == null)
             {
                 var suaxe1 = _context.Xes
                             .Include(x => x.HinhAnhXes) // Include related images
@@ -201,7 +201,12 @@ namespace Devoiture.Controllers
             suaxe.MotaDacDiemChucNang = model.MotaDacDiemChucNang;
             suaxe.Loainhienlieu = model.Loainhienlieu;
             suaxe.Makv = model.Makv;
-
+            if(Hinh != null)
+            {
+                model.Hinhanh = MyUtil.UploadHinh("Xe", Hinh);
+                suaxe.Hinhanh = model.Hinhanh;
+            }
+            _context.Xes.Update(suaxe);
             // Xóa các hình ảnh cũ không còn được sử dụng nữa
             _context.HinhAnhXes.RemoveRange(suaxe.HinhAnhXes);
 
@@ -215,13 +220,6 @@ namespace Devoiture.Controllers
                 };
                 _context.HinhAnhXes.Add(hinhAnhXe);
             }
-
-            // Cập nhật ảnh của xe nếu có ảnh mới
-            if (HinhAnhMoi.Any())
-            {
-                suaxe.Hinhanh = MyUtil.UploadHinh("Xe", HinhAnhMoi.First());
-            }
-
             _context.SaveChanges();
             return RedirectToAction("DanhsachxecuaKH");
         }
@@ -272,5 +270,6 @@ namespace Devoiture.Controllers
             TempData["successMessage"] = xe.Hide ? "Đã ẩn xe." : "Đã hiện xe.";
             return RedirectToAction("DanhsachxecuaKH");
         }
+
     }
 }

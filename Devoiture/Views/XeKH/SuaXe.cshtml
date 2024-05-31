@@ -47,7 +47,7 @@
                             <span asp-validation-for="Muctieuthunhienlieu" class="text-danger"></span>
                         </div>
                         <div class="form-group">
-                            <label class="control-label">Khu vực</label>
+                            <label class="control-label">Thuộc khu vực</label>
                             <select asp-for="Makv" class="form-control" asp-items="Model.KhuVucList"></select>
                         </div>
                         <div class="form-group">
@@ -80,7 +80,7 @@
                         </div>
                         <div class="form-group">
                             <label class="control-label">Hình ảnh khác</label>
-                            <input type="file" name="HinhAnhMoi" class="form-control" onchange="previewImages(this, 'previewHinhAnhXe')" multiple />
+                            <input type="file" name="HinhAnhMoi" class="form-control" onchange="previewImages(this, 'previewHinhAnhXe')" multiple class="form-control-file" />
                             <div id="previewHinhAnhXe" class="mt-2">
                                 @foreach (var hinhAnh in Model.HinhAnhXe)
                                 {

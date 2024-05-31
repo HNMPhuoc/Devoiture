@@ -1,12 +1,14 @@
 ﻿@model Devoiture.ViewModel.Thuexe_VM
 @{
+    ViewData["Title"] = "Thuê xe tự lái";
 }
-<!-- Detail Start -->
-<div class="container-fluid pt-5">
-    <div class="container pt-5">
+
+@await Html.PartialAsync("_PageHeader")
+<div class="container-fluid pb-5">
+    <div class="container">
         <div class="row">
-            <div class="col-lg-8 mb-5">
-                <h1 class="display-4 text-uppercase mb-5">@Model.CarModel</h1>
+            <div class="col-lg-7">
+                <h1 class="display-4 text-uppercase mb-4">@Model.CarModel</h1>
                 <div class="row mx-n2 mb-3">
                     <!-- Hình ảnh chính từ Xe -->
                     <div class="col-12 px-2 pb-2">
@@ -15,30 +17,35 @@
                 </div>
                 <div class="row mx-n2 mb-3">
                     <!-- Các hình ảnh từ bảng HinhAnhXe -->
-                    @foreach (var hinh in Model.HinhAnhList)
+                    @if(Model.HinhAnhList != null)
                     {
-                        <div class="col-md-3 col-6 px-2 pb-2">
-                            <div class="d-flex align-items-center justify-content-center h-100">
-                                <img class="img-fluid img-thumbnail" src="~/images/Xe/@hinh" alt="" style="max-height: 100px;">
+                        @foreach (var hinh in Model.HinhAnhList)
+                        {
+                            <div class="col-md-3 col-6 px-2 pb-2">
+                                <div class="d-flex align-items-center justify-content-center h-100">
+                                    <img class="img-fluid img-thumbnail" src="~/images/Xe/@hinh" alt="" style="max-height: 100px;">
+                                </div>
                             </div>
-                        </div>
+                        }                       
                     }
                 </div>
+            </div>
+            <div class="col-lg-5 d-flex flex-column justify-content-center">
                 <p>@Model.MotaDacDiemChucNang</p>
                 <div class="row pt-2">
-                    <div class="col-md-3 col-6 mb-2">
+                    <div class="col-md-6 mb-2">
                         <i class="fa fa-calendar text-primary mr-2"></i>
                         <span>Năm SX: @Model.NamSx</span>
                     </div>
-                    <div class="col-md-3 col-6 mb-2">
+                    <div class="col-md-6 mb-2">
                         <i class="fa fa-chair text-primary mr-2"></i>
                         <span>Số ghế: @Model.Soghe</span>
                     </div>
-                    <div class="col-md-3 col-6 mb-2">
+                    <div class="col-md-6 mb-2">
                         <i class="fa fa-tachometer-alt text-primary mr-2"></i>
                         <span>Mức tiêu thụ: @Model.Muctieuthunhienlieu km/liter</span>
                     </div>
-                    <div class="col-md-3 col-6 mb-2">
+                    <div class="col-md-6 mb-2">
                         <i class="fa fa-gas-pump text-primary mr-2"></i>
                         <span>Loại nhiên liệu: @Model.Loainhienlieu</span>
                     </div>
@@ -54,79 +61,120 @@
                     </div>
                 </div>
             </div>
-
-            <div class="col-lg-4 mb-5">
-                <div class="bg-secondary p-5 mx-auto" style="overflow: auto;">
-                    <h3 class="text-primary text-center mb-4">Check Availability</h3>
-                    <h6 class="text-primary text-center mb-4 font-weight-bold display-4" style="white-space: nowrap;">@Model.Giathue đ</h6>
-                    <div class="form-group">
-                        <label for="pickupLocation">Địa chỉ nhận xe</label>
-                        <input id="pickupLocation" type="text" class="form-control px-4" style="height: 50px;" placeholder="Enter Pickup Location" />
-                    </div>
-                    <div class="form-group">
-                        <label for="pickupDate">Ngày nhận xe</label>
-                        <div class="date" id="date1" data-target-input="nearest">
-                            <input asp-for="Ngaynhanxe" id="pickupDate" type="text" class="form-control p-4 datetimepicker-input" placeholder="Pickup Date"
-                                   data-target="#date1" data-toggle="datetimepicker" />
+            <div class="col-lg-12">
+                <div class="bg-secondary p-5 mb-5">
+                    <h3 class="text-primary text-center mb-4">Thuê xe</h3>
+                    <h6 class="text-primary text-center mb-4 font-weight-bold display-4" style="white-space: nowrap;">@Model.Giathue đ/ngày</h6>
+                    <form asp-action="Thuexe" method="post">
+                        <input type="hidden" asp-for="Biensoxe" />
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="pickupDate">Ngày nhận xe</label>
+                                    <input type="date" asp-for="Ngaynhanxe" id="pickupDateTime" class="form-control p-4" required="required"/>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="dropDate">Ngày trả xe</label>
+                                    <input type="date" asp-for="Ngaytraxe" id="dropDateTime" class="form-control p-4" required="required"/>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="dropDate">Ngày trả xe</label>
-                        <div class="date" id="date2" data-target-input="nearest">
-                            <input asp-for="Ngaytraxe" id="dropDate" type="text" class="form-control p-4 datetimepicker-input" placeholder="Drop Date"
-                                   data-target="#date2" data-toggle="datetimepicker" />
+                        <div class="form-group">
+                            <label for="pickupLocation">Địa chỉ nhận xe</label>
+                            <input asp-for="diachinhanxe" id="pickupLocation" type="text" class="form-control p-4" placeholder="Nhập địa chỉ nhận xe" required="required" />
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label>Đơn giá thuê: </label>
-                        <input asp-for="Dongiathue" type="text" class="form-control" id="rentalPrice" />
-                    </div>
-                    <div class="form-group">
-                        <label>Bảo hiểm thuê xe: </label>
-                        <input asp-for="Baohiemthuexe" type="text" class="form-control" />
-                    </div>
-                    <div class="form-group">
-                        <label>Tổng tiền thuê xe: </label>
-                        <input asp-for="Tongtienthue" type="text" class="form-control" />
-                    </div>
-                    <div class="form-group mb-0">
-                        <button id="checkAvailabilityButton" class="btn btn-primary btn-block" type="button" style="height: 50px;">Check Now</button>
-                    </div>
-                    <div class="mt-3">
-                        <p id="rentalPrice"></p>
-                        <p id="insurancePrice"></p>
-                        <p id="totalPrice"></p>
-                    </div>
+                        <div class="form-group">
+                            <label>Đơn giá thuê: </label>
+                            <input asp-for="Dongiathue" type="text" class="form-control" id="rentalPrice" readonly />
+                        </div>
+                        <div class="form-group">
+                            <label>Bảo hiểm thuê xe: </label>
+                            <input asp-for="Baohiemthuexe" type="text" class="form-control" id="insurancePrice" readonly />
+                        </div>
+                        <div class="form-group">
+                            <label>Tổng tiền thuê xe: </label>
+                            <input asp-for="Tongtienthue" type="text" class="form-control" id="totalPrice" readonly />
+                        </div>
+                        <div class="form-group">
+                            <label for="paymentMethod">Hình thức thanh toán</label>
+                            @foreach (var ht in Model.HinhThucThanhToanList)
+                            {
+                                <div class="custom-control custom-radio mb-2">
+                                    <input asp-for="Maht" class="custom-control-input" type="radio" name="Maht" value="@ht.MaHt" id="payment_@ht.MaHt" />
+                                    <label class="custom-control-label" for="payment_@ht.MaHt">@ht.TenHt</label>
+                                </div>
+                            }
+                        </div>
+                        <div class="form-group mb-0">
+                            <button id="checkAvailabilityButton" class="btn btn-primary btn-block" type="submit" style="height: 50px;">Thuê xe ngay</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
 </div>
 <!-- Detail End -->
-<script>
-    // Định dạng ngày tháng
-    $('#date1').datetimepicker({
-        format: 'L'
-    });
-    $('#date2').datetimepicker({
-        format: 'L'
-    });
+@section Scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            function calculateRental() {
+                var pickupDate = new Date($('#pickupDateTime').val());
+                var dropDate = new Date($('#dropDateTime').val());
+                var giathue = parseFloat('@Model.Giathue');
 
-    // Lắng nghe sự kiện click vào nút "Check Now"
-    $('#checkAvailabilityButton').click(function () {
-        // Lấy thông tin ngày nhận và trả xe
-        var pickupDate = $('#pickupDate').val();
-        var dropDate = $('#dropDate').val();
+                if (!isNaN(pickupDate) && !isNaN(dropDate) && dropDate > pickupDate) {
+                    var timeDiff = Math.abs(dropDate.getTime() - pickupDate.getTime());
+                    var days = Math.ceil(timeDiff / (1000 * 3600 * 24)); // Số ngày giữa hai ngày
+                    var dongiathue = (giathue * days).toFixed(2);
+                    var baohiemthuexe = (dongiathue * 0.09843205574912892).toFixed(2);
+                    var tongtienthue = (parseFloat(dongiathue) + parseFloat(baohiemthuexe)).toFixed(2);
 
-        // Lấy giá thuê từ bảng xe (đơn giá thuê tương ứng với biển số xe đã chọn)
-        var rentalPrice = 100; // Giả sử giá thuê là 100 đơn vị (được lấy từ cơ sở dữ liệu hoặc tính toán khác)
+                    $('#rentalPrice').val(dongiathue);
+                    $('#insurancePrice').val(baohiemthuexe);
+                    $('#totalPrice').val(tongtienthue);
+                }
+            }
 
-        // Tính số ngày thuê
-        var startDate = new Date(pickupDate);
-        var endDate = new Date(dropDate);
-        var rentalDays = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
+            $('#pickupDateTime, #dropDateTime').change(function () {
+                calculateRental();
+            });
 
-        // Tính đơn giá thuê và bảo hiểm thuê xe
-        var rentalFee = rentalDays * rentalPrice;
-        var insuranceFee = 0.09843205574912892 * rentalFee; // Bảo hiểm thuê xe là 9.843205574912892% của đơn gi
-</script>
+            // Tính toán lần đầu khi trang được tải
+            calculateRental();
+
+            // Set minimum date for pickupDateTime and dropDateTime
+            var today = new Date().toISOString().split('T')[0];
+            $('#pickupDateTime').attr('min', today);
+            $('#dropDateTime').attr('min', today);
+
+            // Set drop date to one day after pickup date by default
+            $('#pickupDateTime').change(function () {
+                var pickupDate = new Date($('#pickupDateTime').val());
+                pickupDate.setDate(pickupDate.getDate() + 1);
+                $('#dropDateTime').val(pickupDate.toISOString().split('T')[0]);
+            });
+
+            // Ensure drop date is always after pickup date
+            $('#pickupDateTime, #dropDateTime').change(function () {
+                var pickupDate = new Date($('#pickupDateTime').val());
+                var dropDate = new Date($('#dropDateTime').val());
+                if (dropDate <= pickupDate) {
+                    pickupDate.setDate(pickupDate.getDate() + 1);
+                    $('#dropDateTime').val(pickupDate.toISOString().split('T')[0]);
+                }
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            if (@TempData["error"]!= null) {
+                toastr.error(@TempData["error"]);
+            }
+            else { }
+        });
+    </script>
+}

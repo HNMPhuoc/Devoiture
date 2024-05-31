@@ -56,27 +56,29 @@
                 <div class="row">
                     @foreach (var item in Model.Take(6))
                     {
-                        <div class="col-lg-4 col-md-6 mb-2">
-                            <div class="rent-item mb-4">
-                                <img class="img-fluid mb-4 rounded" src="~/images/Xe/@item.Hinhanh" alt="@item.TenXe" style="height: 200px; object-fit: cover;">
-                                <h4 class="text-uppercase mb-4">@item.TenXe</h4>
-                                <div class="d-flex justify-content-center mb-4">
-                                    <div class="px-2">
-                                        <i class="fa fa-car text-primary mr-1"></i>
-                                        <span>@item.NamSx</span>
+                        <a asp-action="Thuexe" asp-controller="Thuexetulai" asp-route-biensoxe="@item.Biensoxe" style="text-decoration:none">
+                            <div class="col-lg-4 col-md-6 mb-2">
+                                <div class="rent-item mb-4">
+                                    <img class="img-fluid mb-4 rounded" src="~/images/Xe/@item.Hinhanh" alt="@item.TenXe" style="height: 200px; object-fit: cover;">
+                                    <h4 class="text-uppercase mb-4">@item.TenXe</h4>
+                                    <div class="d-flex justify-content-center mb-4">
+                                        <div class="px-2">
+                                            <i class="fa fa-car text-primary mr-1"></i>
+                                            <span>@item.NamSx</span>
+                                        </div>
+                                        <div class="px-2 border-left border-right">
+                                            <i class="fa fa-cogs text-primary mr-1"></i>
+                                            <span>@item.Tenloai</span>
+                                        </div>
+                                        <div class="px-2">
+                                            <i class="fa fa-road text-primary mr-1"></i>
+                                            <span>@item.Muctieuthunhienlieu L/100km</span>
+                                        </div>
                                     </div>
-                                    <div class="px-2 border-left border-right">
-                                        <i class="fa fa-cogs text-primary mr-1"></i>
-                                        <span>@item.Tenloai</span>
-                                    </div>
-                                    <div class="px-2">
-                                        <i class="fa fa-road text-primary mr-1"></i>
-                                        <span>@item.Muctieuthunhienlieu L/100km</span>
-                                    </div>
+                                    <a class="btn btn-primary px-3" asp-action="Thuexe" asp-controller="Thuexetulai" asp-route-biensoxe="@item.Biensoxe">@item.Giathue đ/Day</a>
                                 </div>
-                                <a class="btn btn-primary px-3" asp-action="Thuexe" asp-controller="Thuexetulai" asp-route-biensoxe="@item.Biensoxe">@item.Giathue đ/Day</a>
                             </div>
-                        </div>
+                        </a>                        
                     }
                 </div>
             </div>

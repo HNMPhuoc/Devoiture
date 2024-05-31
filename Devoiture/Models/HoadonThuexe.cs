@@ -7,25 +7,23 @@ public partial class HoadonThuexe
 {
     public int MaHd { get; set; }
 
-    public int? MaHdong { get; set; }
-
-    public DateTime NgaylapHd { get; set; }
-
-    public double Tiendatcoc { get; set; }
-
-    public double TongTien { get; set; }
+    public int MaYc { get; set; }
 
     public string Email { get; set; } = null!;
 
     public string Biensoxe { get; set; } = null!;
 
-    public int Matrangthai { get; set; }
+    public DateTime NgaylapHd { get; set; }
 
-    public virtual Xe BiensoxeNavigation { get; set; } = null!;
+    public string HoTen { get; set; } = null!;
 
-    public virtual Taikhoan EmailNavigation { get; set; } = null!;
+    public string Sdt { get; set; } = null!;
 
-    public virtual HopDongThueXe? MaHdongNavigation { get; set; }
+    public double Baohiemthuexe { get; set; }
 
-    public virtual Trangthaithanhtoan MatrangthaiNavigation { get; set; } = null!;
+    public double TongTienThue { get; set; }
+
+    public double Dathanhtoan { get; set; }
+
+    public virtual Yeucauthuexe MaYcNavigation { get; set; } = null!;
 }

@@ -80,7 +80,7 @@
                             <div class="form-group">
                                 <label class="control-label">Khu vực cho thuê xe</label>
                                 <select asp-for="Makv" class="form-control" id="Makv">
-                                    <option value="">Chọn khu vực</option>
+                                    <option value="">Thuộc khu vực</option>
                                     @foreach (var item in Model.KhuVucList)
                                     {
                                         <option value="@item.Value">@item.Text</option>

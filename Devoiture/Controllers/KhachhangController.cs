@@ -110,7 +110,7 @@ namespace Devoiture.Controllers
                             kh.Online = true;
                             _context.Taikhoans.Update(kh);
                             _context.SaveChanges();
-                            if (kh.IdQuyen == 1 || kh.IdQuyen == 2)
+                            if (kh.IdQuyen != 3)
                             {
                                 return RedirectToAction("Index", "TrangchuAdmin", new { area = "Admin" });
                             }

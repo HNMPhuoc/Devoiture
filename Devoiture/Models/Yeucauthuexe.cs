@@ -7,29 +7,39 @@ public partial class Yeucauthuexe
 {
     public int MaYc { get; set; }
 
+    public string Email { get; set; } = null!;
+
+    public string Biensoxe { get; set; } = null!;
+
+    public int Maht { get; set; }
+
+    public int Matt { get; set; }
+
+    public string Diadiemnhanxe { get; set; } = null!;
+
     public DateTime Ngaynhanxe { get; set; }
 
     public DateTime Ngaytraxe { get; set; }
 
     public int Songaythue { get; set; }
 
-    public double Tongtienthue { get; set; }
-
-    public string? Diadiemnhanxe { get; set; }
-
-    public bool? Chapnhan { get; set; }
-
     public double Baohiemthuexe { get; set; }
 
-    public string Email { get; set; } = null!;
+    public double Dongiathue { get; set; }
 
-    public string Biensoxe { get; set; } = null!;
+    public double Tongtienthue { get; set; }
+
+    public bool? Chapnhan { get; set; }
 
     public virtual Xe BiensoxeNavigation { get; set; } = null!;
 
     public virtual Taikhoan EmailNavigation { get; set; } = null!;
 
-    public virtual ICollection<HopDongThueXe> HopDongThueXes { get; set; } = new List<HopDongThueXe>();
+    public virtual ICollection<HoaDonChoThueXe> HoaDonChoThueXes { get; set; } = new List<HoaDonChoThueXe>();
 
-    public virtual ICollection<LichChoThue> LichChoThues { get; set; } = new List<LichChoThue>();
+    public virtual ICollection<HoadonThuexe> HoadonThuexes { get; set; } = new List<HoadonThuexe>();
+
+    public virtual Hinhthucthanhtoan MahtNavigation { get; set; } = null!;
+
+    public virtual TrangthaiThuexe MattNavigation { get; set; } = null!;
 }
