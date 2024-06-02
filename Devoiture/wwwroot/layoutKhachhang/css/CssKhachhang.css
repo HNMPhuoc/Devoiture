@@ -6,6 +6,11 @@
     --dark: #1C1E32;
 }
 
+.csborder
+{
+    border-radius: 33px !important;
+}
+
 h1,
 h2,
 .font-weight-bold {

@@ -1,0 +1,11 @@
+﻿.ctborder
+    {
+    border: 1px solid #000000 !important;
+    border-radius: 999px !important;
+    
+}
+
+.ctsborder {
+    border: 1px solid #000000 !important;
+    border-radius: 12px !important;
+}
