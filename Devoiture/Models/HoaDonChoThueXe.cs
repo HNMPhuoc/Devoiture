@@ -19,8 +19,6 @@ public partial class HoaDonChoThueXe
 
     public string Sdt { get; set; } = null!;
 
-    public double Chietkhau { get; set; }
-
     public double Tongtiennhanduoc { get; set; }
 
     public virtual Yeucauthuexe MaYcNavigation { get; set; } = null!;

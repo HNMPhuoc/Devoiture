@@ -2,8 +2,6 @@
 using Devoiture.Helpers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using System.Security.Claims;
-using System;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,15 +21,21 @@ builder.Services.AddSession(option =>
     option.IdleTimeout = TimeSpan.FromMinutes(30);
     option.Cookie.HttpOnly = true;
     option.Cookie.IsEssential = true;
+    
 });
 
 builder.Services.AddAutoMapper(typeof(AutomapperProfile));
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(option =>
 {
+   
     option.LoginPath = "/Khachhang/Dangnhap";
     option.AccessDeniedPath = "/Admin/Views/Shared/AccessDenied";
+
 });
+builder.Services.AddControllersWithViews();
+builder.Services.Configure<SMTPConfig>(builder.Configuration.GetSection("SMTPConfig"));
+builder.Services.AddScoped<EmailSender>();
 
 
 var app = builder.Build();

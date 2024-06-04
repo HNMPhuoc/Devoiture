@@ -7,5 +7,6 @@
         public static string ACCOUNT_AVATAR = "AccountAvatar";
         public static string ACCOUNT_ROLE = "AccountRole";
         public static string ACCOUNT_ROLENAME = "AccountRoleName";
+        public static string ACCOUNT_REQUEST = "AccountRequest";
     }
 }

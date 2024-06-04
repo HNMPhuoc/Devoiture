@@ -12,6 +12,7 @@
                 <div class="navbar-nav ml-auto py-0">
                     <a asp-action="Index" asp-controller="Home" class="nav-item nav-link active">Home</a>
                     <a asp-action="About" asp-controller="Home" class="nav-item nav-link">About</a>
+                    <a asp-action="Privacy" asp-controller="Home" class="nav-item nav-link">Privacy</a>
                     @if (Context.Session.GetString("AccountID") == null)
                     {
                         <div class="nav-item dropdown">
@@ -26,24 +27,28 @@
                     }
                     else
                     {
-                        <a asp-action="DanhsachxecuaKH" asp-controller="XeKH" class="nav-item nav-link">Car hire</a>
+                        <a asp-controller="Thuexetulai" asp-action="Danhsachyeucauthuexe" class="nav-item nav-link">Order(@Context.Session.GetInt32("AccountRequest"))</a>
+                        <a asp-action="DanhsachxecuaKH" asp-controller="XeKH" class="nav-item nav-link">My Car</a>
+                        <a asp-action="DanhsachxecuaKH" asp-controller="XeKH" class="nav-item nav-link">My Journey</a>
                         <div class="nav-item dropdown">
                             <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
                                 @if (string.IsNullOrEmpty(Context.Session.GetString("AccountAvatar")))
                                 {
                                     <img class="rounded-circle" src="~/images/AnhDaiDien/userdefault.png" alt="" style="width: 40px; height: 40px;">
-
                                     @Context.Session.GetString("AccountName")
                                 }
                                 else
                                 {
                                     <img class="rounded-circle" src="~/images/AnhDaiDien/@Context.Session.GetString("AccountAvatar")" alt="" style="width: 40px; height: 40px;">
-
                                     @Context.Session.GetString("AccountName")
                                 }
                             </a>
                             <div class="dropdown-menu rounded-0 m-0">
-                                <a asp-action="ProfileKH" asp-controller="Khachhang" class="dropdown-item">Profile</a>
+                                <a asp-action="ProfileKH" asp-controller="Khachhang" class="dropdown-item"><ion-icon name="person"></ion-icon>Profile</a>
+                                @if (Context.Session.GetInt32("AccountRole") != 3)
+                                {
+                                    <a asp-action="Index" asp-controller="TrangchuAdmin" asp-area="Admin" class="dropdown-item"><ion-icon name="code-working-sharp"></ion-icon>Development</a>
+                                }
                                 <a asp-action="Dangxuat" asp-controller="Khachhang" class="dropdown-item">
                                     <ion-icon name="log-in"></ion-icon>Logout
                                 </a>

@@ -77,8 +77,10 @@ namespace Devoiture.Controllers
                     _context.HinhAnhXes.Add(hinhAnhXe);
                 }
                 _context.SaveChanges();
+                TempData["success"] = "Đăng ký cho thuê xe thành công. Vui lòng chờ xác nhận kiểm duyệt xe";
                 return RedirectToAction("Index", "Home");
             }
+            TempData["error"] = "Đăng ký cho thuê xe thất bại";
             LoadDropdownLists(model);
             return View(model);
         }
@@ -181,6 +183,7 @@ namespace Devoiture.Controllers
                     HinhAnhXe = suaxe1.HinhAnhXes.Select(h => h.Hinh).ToList()
                 };
                 LoadDropdownLists1(viewModel); // Nếu cần load dropdown lists
+                TempData["error"] = "Cập nhật thông tin xe thất bại";
                 return View(viewModel);
             }
             var suaxe = _context.Xes.Include(x => x.HinhAnhXes).FirstOrDefault(p => p.Biensoxe == model.Biensoxe);
@@ -221,6 +224,7 @@ namespace Devoiture.Controllers
                 _context.HinhAnhXes.Add(hinhAnhXe);
             }
             _context.SaveChanges();
+            TempData["success"] = "Cập nhật thông tin xe thành công";
             return RedirectToAction("DanhsachxecuaKH");
         }
         private void LoadDropdownLists1(SuaxecuaKH_VM model)

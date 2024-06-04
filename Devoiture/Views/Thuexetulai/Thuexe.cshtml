@@ -82,7 +82,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="pickupLocation">Địa chỉ nhận xe</label>
+                            <label for="pickupLocation">Địa điểm nhận xe</label>
                             <input asp-for="diachinhanxe" id="pickupLocation" type="text" class="form-control p-4" placeholder="Nhập địa chỉ nhận xe" required="required" />
                         </div>
                         <div class="form-group">
@@ -94,7 +94,7 @@
                             <input asp-for="Baohiemthuexe" type="text" class="form-control" id="insurancePrice" readonly />
                         </div>
                         <div class="form-group">
-                            <label>Tổng tiền thuê xe: </label>
+                            <label>Thành tiền: </label>
                             <input asp-for="Tongtienthue" type="text" class="form-control" id="totalPrice" readonly />
                         </div>
                         <div class="form-group">
@@ -166,15 +166,6 @@
                     $('#dropDateTime').val(pickupDate.toISOString().split('T')[0]);
                 }
             });
-        });
-    </script>
-
-    <script>
-        $(document).ready(function () {
-            if (@TempData["error"]!= null) {
-                toastr.error(@TempData["error"]);
-            }
-            else { }
         });
     </script>
 }

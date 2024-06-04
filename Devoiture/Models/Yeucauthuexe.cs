@@ -7,13 +7,17 @@ public partial class Yeucauthuexe
 {
     public int MaYc { get; set; }
 
-    public string Email { get; set; } = null!;
+    public string Chuxe { get; set; } = null!;
+
+    public string Nguoithue { get; set; } = null!;
 
     public string Biensoxe { get; set; } = null!;
 
     public int Maht { get; set; }
 
     public int Matt { get; set; }
+
+    public DateTime Ngayyeucau { get; set; }
 
     public string Diadiemnhanxe { get; set; } = null!;
 
@@ -29,11 +33,7 @@ public partial class Yeucauthuexe
 
     public double Tongtienthue { get; set; }
 
-    public bool? Chapnhan { get; set; }
-
     public virtual Xe BiensoxeNavigation { get; set; } = null!;
-
-    public virtual Taikhoan EmailNavigation { get; set; } = null!;
 
     public virtual ICollection<HoaDonChoThueXe> HoaDonChoThueXes { get; set; } = new List<HoaDonChoThueXe>();
 
@@ -42,4 +42,6 @@ public partial class Yeucauthuexe
     public virtual Hinhthucthanhtoan MahtNavigation { get; set; } = null!;
 
     public virtual TrangthaiThuexe MattNavigation { get; set; } = null!;
+
+    public virtual Taikhoan NguoithueNavigation { get; set; } = null!;
 }

@@ -19,6 +19,8 @@ public partial class HoadonThuexe
 
     public string Sdt { get; set; } = null!;
 
+    public double Tiendatcoc { get; set; }
+
     public double Baohiemthuexe { get; set; }
 
     public double TongTienThue { get; set; }

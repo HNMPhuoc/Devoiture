@@ -44,17 +44,19 @@
                                 <span>@item.Muctieuthunhienlieu L/100km</span>
                             </div>
                         </div>
-                        <a class="btn btn-primary px-3" asp-action="SuaXe" asp-route-biensx="@item.Biensoxe">Chi tiết xe</a>
+                        <a class="btn btn-primary px-3" asp-action="SuaXe" asp-route-biensx="@item.Biensoxe">
+                            <ion-icon name="information-circle"></ion-icon>
+                        </a>
                         <form asp-action="CapnhatBaotri" method="post" class="d-inline">
                             <input type="hidden" name="biensoxe" value="@item.Biensoxe" />
                             <button type="submit" class="btn @(item.Trangthaibaotri ? "btn-secondary" : "btn-success") px-3">
-                                @(item.Trangthaibaotri ? "Tắt bảo trì" : "Bảo trì")
+                                <ion-icon name="settings"></ion-icon>
                             </button>
                         </form>
                         <form asp-action="CapnhatAnXe" method="post" class="d-inline">
                             <input type="hidden" name="biensoxe" value="@item.Biensoxe" />
                             <button type="submit" class="btn @(item.Hide ? "btn-danger" : "btn-warning") px-3">
-                                @(item.Hide ? "Hiện" : "Ẩn")
+                                <ion-icon name="eye-off"></ion-icon>
                             </button>
                         </form>
                     </div>

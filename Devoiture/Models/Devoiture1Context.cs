@@ -313,23 +313,22 @@ public partial class Devoiture1Context : DbContext
             entity.Property(e => e.Biensoxe)
                 .HasMaxLength(10)
                 .IsUnicode(false);
-            entity.Property(e => e.Diadiemnhanxe).HasMaxLength(100);
-            entity.Property(e => e.Email)
+            entity.Property(e => e.Chuxe)
                 .HasMaxLength(30)
                 .IsUnicode(false);
+            entity.Property(e => e.Diadiemnhanxe).HasMaxLength(100);
             entity.Property(e => e.Matt).HasColumnName("matt");
             entity.Property(e => e.Ngaynhanxe).HasColumnType("datetime");
             entity.Property(e => e.Ngaytraxe).HasColumnType("datetime");
+            entity.Property(e => e.Ngayyeucau).HasColumnType("datetime");
+            entity.Property(e => e.Nguoithue)
+                .HasMaxLength(30)
+                .IsUnicode(false);
 
             entity.HasOne(d => d.BiensoxeNavigation).WithMany(p => p.Yeucauthuexes)
                 .HasForeignKey(d => d.Biensoxe)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Yeucauthuexe_Xe");
-
-            entity.HasOne(d => d.EmailNavigation).WithMany(p => p.Yeucauthuexes)
-                .HasForeignKey(d => d.Email)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Yeucauthuexe_Taikhoan");
 
             entity.HasOne(d => d.MahtNavigation).WithMany(p => p.Yeucauthuexes)
                 .HasForeignKey(d => d.Maht)
@@ -340,6 +339,11 @@ public partial class Devoiture1Context : DbContext
                 .HasForeignKey(d => d.Matt)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Yeucauthuexe_TrangthaiThuexe");
+
+            entity.HasOne(d => d.NguoithueNavigation).WithMany(p => p.Yeucauthuexes)
+                .HasForeignKey(d => d.Nguoithue)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Yeucauthuexe_Taikhoan");
         });
 
         OnModelCreatingPartial(modelBuilder);

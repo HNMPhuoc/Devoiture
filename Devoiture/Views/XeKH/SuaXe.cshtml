@@ -81,11 +81,11 @@
                         <div class="form-group">
                             <label class="control-label">Hình ảnh khác</label>
                             <input type="file" name="HinhAnhMoi" class="form-control" onchange="previewImages(this, 'previewHinhAnhXe')" multiple class="form-control-file" />
-                            <div id="previewHinhAnhXe" class="mt-2">
+                            <div id="previewHinhAnhXe" class="mt-2" style="display: flex; flex-wrap: wrap;">
                                 @foreach (var hinhAnh in Model.HinhAnhXe)
                                 {
-                                    <div class="preview-image">
-                                        <img src="~/images/Xe/@hinhAnh" alt="Hình ảnh xe" style="max-width:150px;max-height:150px;border-radius:7px" />
+                                    <div class="preview-image" style="flex: 0 0 calc(33.33% - 10px); margin-right: 10px; margin-bottom: 10px;">
+                                        <img src="~/images/Xe/@hinhAnh" alt="Hình ảnh xe" style="width: 100%; height: auto; border-radius: 7px;" />
                                     </div>
                                 }
                             </div>

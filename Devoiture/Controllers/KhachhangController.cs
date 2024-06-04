@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Devoiture.Helpers;
 using System.Data.SqlTypes;
+using Microsoft.AspNetCore.Http;
 
 namespace Devoiture.Controllers
 {
@@ -48,8 +49,10 @@ namespace Devoiture.Controllers
                 }                
                 _context.Taikhoans.Add(kh);
                 _context.SaveChanges();
+                TempData["success"] = "Đăng ký thành công";
                 return RedirectToAction("Index", "Home");
             }
+            TempData["error"] = "Đăng ký thất bại";
             return View(model);
         }
         public IActionResult Dangnhap(string? ReturnUrl)
@@ -85,7 +88,7 @@ namespace Devoiture.Controllers
                             ModelState.AddModelError("loi", "Tài khoản hoặc mật khẩu. Vui lòng kiểm tra lại");
                         }
                         else
-                        {
+                        {                            
                             var claims = new List<Claim>
                             {
                                 new Claim(ClaimTypes.Email, kh.Email),
@@ -105,16 +108,22 @@ namespace Devoiture.Controllers
                             if (kh.HinhDaiDien != null)
                             {
                                 HttpContext.Session.SetString(MySettings.ACCOUNT_AVATAR, kh.HinhDaiDien);
-                            }                                
+                            }
+                            var soyc = await _context.Yeucauthuexes
+                                .Include(y => y.NguoithueNavigation)
+                                .CountAsync(y => y.Chuxe == kh.Email && y.Matt == 1);
+                            HttpContext.Session.SetInt32(MySettings.ACCOUNT_REQUEST, soyc);
                             await HttpContext.SignInAsync(claimPrincipal);
                             kh.Online = true;
                             _context.Taikhoans.Update(kh);
                             _context.SaveChanges();
+                            TempData["success"] = "Đăng nhập thành công";
+                            
                             if (kh.IdQuyen != 3)
                             {
                                 return RedirectToAction("Index", "TrangchuAdmin", new { area = "Admin" });
                             }
-                            else if (kh.IdQuyen == 3 && Url.IsLocalUrl(ReturnUrl))
+                            else if (Url.IsLocalUrl(ReturnUrl))
                             {
                                 return Redirect(ReturnUrl);
                             }
@@ -122,10 +131,17 @@ namespace Devoiture.Controllers
                             {
                                 return RedirectToAction("Index", "Home");
                             }
+                            if (HttpContext.Session.GetInt32("MaYcFromToken") != null)
+                            {
+                                var maYc = HttpContext.Session.GetInt32("MaYcFromToken").Value;
+                                HttpContext.Session.Remove("MaYcFromToken");
+                                return RedirectToAction("Chitietyc", "Thuexetulai", new { mayc = maYc });
+                            }
                         }
                     }
                 }
             }
+            TempData["error"] = "Đăng nhập thất bại";
             return View();
         }
         [Authorize]
@@ -138,6 +154,7 @@ namespace Devoiture.Controllers
             _context.Taikhoans.Update(logoutkh);
             _context.SaveChanges();
             HttpContext.Session.Clear();
+            TempData["error"] = "Đã đăng xuất";
             return RedirectToAction("Index", "Home");
         }
         [Authorize]
@@ -292,7 +309,7 @@ namespace Devoiture.Controllers
 
             _context.Update(editkh);
             _context.SaveChanges();
-
+            TempData["success"] = "Cập nhật thông tin thành công";
             // Cập nhật thông tin trong session nếu cần
             if (editkh.HinhDaiDien != null)
             {
