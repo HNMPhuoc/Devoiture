@@ -1,0 +1,86 @@
+﻿@model Devoiture.ViewModel.ChitietycThanhtoan_VM
+
+@{
+    ViewData["Title"] = "Thông tin yêu cầu thuê xe";
+}
+
+@await Html.PartialAsync("_PageHeader")
+
+<div class="container my-4">
+    <div class="row mb-4">
+        <div class="col-md-12 text-right">
+            <p><strong>Request Date:</strong> @Model.Ngayyeucau</p>
+        </div>
+    </div>
+    <div class="row">
+        <!-- Thông tin người thuê xe -->
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    Thông tin người thuê xe
+                </div>
+                <div class="card-body">
+                    <p><strong>Email người thuê:</strong> @Model.Chuxe</p>
+                    <p><strong>Họ và tên:</strong> @Model.HoTen</p>
+                    <p><strong>Số điện thoại:</strong> @Model.Sdt</p>
+                    <p><strong>Mã định danh căn cước công dân:</strong> @Model.SoCccd</p>
+                    @if (Model.HinhCccd != null)
+                    {
+                        <img src="~/images/AnhCCCD/@Model.HinhCccd" alt="CCCD" class="img-thumbnail mb-3" style="max-width: 200px; max-height: 200px;" />
+                    }
+                    else
+                    {
+                        <img src="~/images/AnhCCCD/cccdDefault.png" alt="CCCD" class="img-thumbnail mb-3" style="max-width: 200px; max-height: 200px;" />
+                    }
+                    <p><strong>Số giấy phép lái xe B2:</strong> @Model.SoGplxB2</p>
+                    @if (Model.HinhGplxb2 != null)
+                    {
+                        <img src="~/images/AnhGPLX/@Model.HinhGplxb2" alt="GPLX" class="img-thumbnail mb-3" style="max-width: 200px; max-height: 200px;" />
+                    }
+                    else
+                    {
+                        <img src="~/images/AnhGPLX/gplxDefault.png" alt="GPLX" class="img-thumbnail mb-3" style="max-width: 200px; max-height: 200px;" />
+                    }
+                </div>
+            </div>
+        </div>
+        <!-- Thông tin xe được thuê -->
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    Thông tin xe được thuê
+                </div>
+                <div class="card-body text-center">
+                    <img src="~/images/Xe/@Model.HinhXe" alt="Car Image" class="img-fluid mb-3" style="max-width: 100%;" />
+                    <p><strong>Mẫu xe:</strong> @Model.TenMauXe</p>
+                    <p><strong>Biển số xe:</strong> @Model.BienSoXe</p>
+                </div>
+            </div>
+        </div>
+        <!-- Thông tin yêu cầu thuê xe -->
+        <div class="col-md-12">
+            <div class="card mb-4">
+                <div class="card-header">
+                    Thông tin yêu cầu thuê xe
+                </div>
+                <div class="card-body">
+                    <p><strong>Thời gian thuê xe:</strong> @Model.ThoiGianThue</p>
+                    <p><strong>Địa điểm nhận xe:</strong> @Model.DiaDiemNhanXe</p>
+                    <p><strong>Bảo hiểm thuê xe:</strong> @Model.Baohiemthuexe đ</p>
+                    <p><strong>Hình thức thanh toán:</strong> @Model.httt</p>
+                    <p><strong>Thành tiền:</strong> @Model.TongTienThue đ</p>
+                    <p><strong>Số tiền cần trả:</strong> @Model.Sotiencantra đ</p>
+                    @if (Model.httt == "Momo")
+                    {
+                        <a href="@Url.Action("CreatePaymentUrl", "Momo", new { mayc = Model.MaYc })" class="btn btn-primary">Thanh toán Momo</a>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <a href="@Url.Action("DanhsachThuexeCanThanhToanTienCoc", "Thuexetulai")" class="btn btn-primary">Back to List</a>
+        </div>
+    </div>
+</div>

@@ -95,7 +95,9 @@ public partial class Devoiture1Context : DbContext
 
             entity.ToTable("HoaDonChoThueXe");
 
-            entity.Property(e => e.MaHdct).HasColumnName("MaHDCT");
+            entity.Property(e => e.MaHdct)
+                .HasMaxLength(100)
+                .HasColumnName("MaHDCT");
             entity.Property(e => e.Biensx)
                 .HasMaxLength(10)
                 .IsUnicode(false);
@@ -123,7 +125,9 @@ public partial class Devoiture1Context : DbContext
 
             entity.ToTable("HoadonThuexe");
 
-            entity.Property(e => e.MaHd).HasColumnName("MaHD");
+            entity.Property(e => e.MaHd)
+                .HasMaxLength(100)
+                .HasColumnName("MaHD");
             entity.Property(e => e.Biensoxe)
                 .HasMaxLength(10)
                 .IsUnicode(false);

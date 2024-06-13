@@ -55,6 +55,7 @@ namespace Devoiture.Helpers
             string websiteKDX = "Kiểm duyệt xe";
             string websiteDKCTXTL = "Đăng kí cho thuê xe tự lái";
             string websiteQTV = "Trang chủ quản trị viên";
+            string websiteQLYCTX = "Quản lí yêu cầu thuê xe";
             switch (controller)
             {
                 case "QLKhachhang":
@@ -189,7 +190,38 @@ namespace Devoiture.Helpers
                         return;
                     }
                     break;
-                
+                case "Thuexetulai":
+                    if (action == "Thuexe" && !HasPermission(websiteQLYCTX, "Create"))
+                    {
+                        context.Result = new ViewResult { ViewName = "AccessDenied" };
+                        return;
+                    }
+                    if (action == "Danhsachyeucauthuexe" && !HasPermission(websiteQLYCTX, "Quyentruycap"))
+                    {
+                        context.Result = new ViewResult { ViewName = "AccessDenied" };
+                        return;
+                    }
+                    if (action == "Chitietyc" && !HasPermission(websiteQLYCTX, "Read"))
+                    {
+                        context.Result = new ViewResult { ViewName = "AccessDenied" };
+                        return;
+                    }
+                    if (action == "Access" && !HasPermission(websiteQLYCTX, "Update"))
+                    {
+                        context.Result = new ViewResult { ViewName = "AccessDenied" };
+                        return;
+                    }
+                    if (action == "Deny" && !HasPermission(websiteQLYCTX, "Update"))
+                    {
+                        context.Result = new ViewResult { ViewName = "AccessDenied" };
+                        return;
+                    }
+                    if (action == "DanhsachThuexeCanThanhToanTienCoc" && !HasPermission(websiteQLYCTX, "Quyentruycap"))
+                    {
+                        context.Result = new ViewResult { ViewName = "AccessDenied" };
+                        return;
+                    }
+                    break;
             }
         }
     }

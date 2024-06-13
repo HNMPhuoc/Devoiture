@@ -14,6 +14,7 @@ namespace Devoiture.Controllers
 {
     public class KhachhangController : Controller
     {
+        
         private readonly Devoiture1Context _context;
         private readonly IMapper _mapper;
         public KhachhangController(Devoiture1Context context, IMapper mapper)
@@ -118,7 +119,20 @@ namespace Devoiture.Controllers
                             _context.Taikhoans.Update(kh);
                             _context.SaveChanges();
                             TempData["success"] = "Đăng nhập thành công";
-                            
+                            if (HttpContext.Session.GetInt32("MaYcFromToken") != null)
+                            {
+                                var maYc = HttpContext.Session.GetInt32("MaYcFromToken").Value;
+                                HttpContext.Session.Remove("MaYcFromToken");
+                                var yeuCau = await _context.Yeucauthuexes.FirstOrDefaultAsync(y => y.MaYc == maYc);
+                                if (yeuCau != null && yeuCau.Chuxe == kh.Email)
+                                {
+                                    return RedirectToAction("Chitietyc", "Thuexetulai", new { mayc = maYc });
+                                }
+                                else
+                                {
+                                    return RedirectToAction("Index", "Home");
+                                }
+                            }
                             if (kh.IdQuyen != 3)
                             {
                                 return RedirectToAction("Index", "TrangchuAdmin", new { area = "Admin" });
@@ -128,15 +142,9 @@ namespace Devoiture.Controllers
                                 return Redirect(ReturnUrl);
                             }
                             else
-                            {
+                            {                                
                                 return RedirectToAction("Index", "Home");
-                            }
-                            if (HttpContext.Session.GetInt32("MaYcFromToken") != null)
-                            {
-                                var maYc = HttpContext.Session.GetInt32("MaYcFromToken").Value;
-                                HttpContext.Session.Remove("MaYcFromToken");
-                                return RedirectToAction("Chitietyc", "Thuexetulai", new { mayc = maYc });
-                            }
+                            }                            
                         }
                     }
                 }
@@ -328,5 +336,35 @@ namespace Devoiture.Controllers
         {
             return dateTime >= SqlDateTime.MinValue.Value && dateTime <= SqlDateTime.MaxValue.Value;
         }
+        [HttpGet]
+        public IActionResult Quenmk()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Quenmk(Quenmatkhau_VM model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var kh = _context.Taikhoans.SingleOrDefault(p => p.Email.ToLower() == model.Email.ToLower());
+            if (kh == null)
+            {
+                TempData["error"] = "Email không tồn tại";
+                return View(model);
+            }
+
+            kh.Matkhau = BCrypt.Net.BCrypt.HashPassword(model.Matkhau);
+            _context.Update(kh);
+            _context.SaveChanges();
+
+            TempData["success"] = "Mật khẩu đã được đặt lại thành công";
+            return RedirectToAction("Dangnhap", "Khachhang");
+        }
+
     }
 }

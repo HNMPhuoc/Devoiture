@@ -1,0 +1,55 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thông Báo Thanh Toán Tiền Đặt Cọc</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #333;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .footer {
+            margin-top: 20px;
+            font-size: 12px;
+            color: #999;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Thông Báo Thanh Toán Tiền Đặt Cọc</h1>
+        <p>Xin chào {{UserName}},</p>
+        <p>Yêu cầu đặt xe của bạn cho xe có biển số {{CarDetails}} đã được chấp nhận. Vui lòng thanh toán tiền đặt cọc để hoàn tất thủ tục.</p>
+        <p>Xin cảm ơn!</p>
+        <div class="footer">
+            <p>Đội ngũ Devoiture</p>
+        </div>
+    </div>
+</body>
+</html>

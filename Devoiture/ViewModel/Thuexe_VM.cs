@@ -38,14 +38,14 @@ namespace Devoiture.ViewModel
         {
             get
             {
-                return Math.Round(Dongiathue * 0.09843205574912892, 2);
+                return Math.Round(Dongiathue * 0.09843205574912892, 0);
             }
         }
         public double Tongtienthue 
         {
             get
             {
-                return Math.Round(Dongiathue + Baohiemthuexe,2);
+                return Math.Round(Dongiathue + Baohiemthuexe,0);
             }
         }
         public List<Hinhthucthanhtoan> HinhThucThanhToanList { get; set; } = new List<Hinhthucthanhtoan>();

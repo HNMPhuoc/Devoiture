@@ -27,9 +27,9 @@
                     }
                     else
                     {
-                        <a asp-controller="Thuexetulai" asp-action="Danhsachyeucauthuexe" class="nav-item nav-link">Order(@Context.Session.GetInt32("AccountRequest"))</a>
-                        <a asp-action="DanhsachxecuaKH" asp-controller="XeKH" class="nav-item nav-link">My Car</a>
-                        <a asp-action="DanhsachxecuaKH" asp-controller="XeKH" class="nav-item nav-link">My Journey</a>
+                        <a asp-action="DanhsachxecuaKH" asp-controller="XeKH" class="nav-item nav-link">Car</a>
+                        <a asp-controller="Thuexetulai" asp-action="Danhsachyeucauthuexe" class="nav-item nav-link">Requests(@Context.Session.GetInt32("AccountRequest"))</a>
+                        <a asp-action="DanhsachThuexeCanThanhToanTienCoc" asp-controller="Thuexetulai" class="nav-item nav-link">Journey</a>
                         <div class="nav-item dropdown">
                             <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
                                 @if (string.IsNullOrEmpty(Context.Session.GetString("AccountAvatar")))
@@ -49,6 +49,7 @@
                                 {
                                     <a asp-action="Index" asp-controller="TrangchuAdmin" asp-area="Admin" class="dropdown-item"><ion-icon name="code-working-sharp"></ion-icon>Development</a>
                                 }
+                                <a asp-action="Index" asp-controller="HoaDon" class="dropdown-item"><ion-icon name="person"></ion-icon>History</a>
                                 <a asp-action="Dangxuat" asp-controller="Khachhang" class="dropdown-item">
                                     <ion-icon name="log-in"></ion-icon>Logout
                                 </a>

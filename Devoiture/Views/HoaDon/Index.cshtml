@@ -1,0 +1,37 @@
+﻿@model Devoiture.ViewModel.HoaDon_VM
+
+@{
+    ViewData["Title"] = "Lịch sử giao dịch";
+}
+
+@await Html.PartialAsync("_PageHeader")
+
+<div class="container my-4">
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="thuexe-tab" data-toggle="tab" href="#thuexe" role="tab" aria-controls="thuexe" aria-selected="true">Thuê xe</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="chothue-tab" data-toggle="tab" href="#chothue" role="tab" aria-controls="chothue" aria-selected="false">Cho thuê xe</a>
+        </li>
+    </ul>
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="thuexe" role="tabpanel" aria-labelledby="thuexe-tab">
+            @await Html.PartialAsync("_HoaDonThuePartial", Model.Hoadonthuexes)
+        </div>
+        <div class="tab-pane fade" id="chothue" role="tabpanel" aria-labelledby="chothue-tab">
+            @await Html.PartialAsync("_HoadonChoThuePartial", Model.HoadonchoThuexes)
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#myTab a').on('click', function (e) {
+                e.preventDefault();
+                $(this).tab('show');
+            });
+        });
+    </script>
+}

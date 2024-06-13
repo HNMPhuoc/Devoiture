@@ -33,6 +33,8 @@ public partial class Yeucauthuexe
 
     public double Tongtienthue { get; set; }
 
+    public double Sotiencantra { get; set; }
+
     public virtual Xe BiensoxeNavigation { get; set; } = null!;
 
     public virtual ICollection<HoaDonChoThueXe> HoaDonChoThueXes { get; set; } = new List<HoaDonChoThueXe>();

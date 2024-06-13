@@ -7,10 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="MessageEmail\SuccessNotification.html" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Include="wwwroot\layoutKhachhang\js\main.js" />
     <None Include="wwwroot\layoutKhachhang\scss\bootstrap.scss" />
     <None Include="wwwroot\layoutKhachhang\scss\bootstrap\scss\bootstrap-grid.scss" />
@@ -118,6 +114,8 @@
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.2" />
     <PackageReference Include="NETCore.MailKit" Version="2.1.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="RestSharp" Version="111.2.0" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.6.0" />
     <PackageReference Include="toastr" Version="2.1.1" />
   </ItemGroup>

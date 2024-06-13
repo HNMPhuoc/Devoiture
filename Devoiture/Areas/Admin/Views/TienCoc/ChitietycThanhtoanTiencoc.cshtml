@@ -1,0 +1,141 @@
+﻿@model Devoiture.ViewModel.ChitietycThanhtoan_VM
+
+@{
+    ViewData["Title"] = "Thông tin yêu cầu thuê xe";
+}
+
+<div class="container mt-5">
+    <h4>@ViewData["Title"]</h4>
+    <div class="row mb-4">
+        <div class="col-md-12 text-right">
+            <p><strong>Request Date:</strong> @Model.Ngayyeucau</p>
+        </div>
+    </div>
+    <div class="row">
+        <!-- Thông tin người thuê xe -->
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    Thông tin người thuê xe
+                </div>
+                <div class="card-body">
+                    <table class="table table-striped">
+                        <tr>
+                            <th>Email người thuê:</th>
+                            <td>@Model.Chuxe</td>
+                        </tr>
+                        <tr>
+                            <th>Họ và tên:</th>
+                            <td>@Model.HoTen</td>
+                        </tr>
+                        <tr>
+                            <th>Số điện thoại:</th>
+                            <td>@Model.Sdt</td>
+                        </tr>
+                        <tr>
+                            <th>Mã định danh căn cước công dân:</th>
+                            <td>@Model.SoCccd</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                @if (Model.HinhCccd != null)
+                                {
+                                    <img src="~/images/AnhCCCD/@Model.HinhCccd" alt="CCCD" class="img-thumbnail mb-3" style="max-width: 200px; max-height: 200px;" />
+                                }
+                                else
+                                {
+                                    <img src="~/images/AnhCCCD/cccdDefault.png" alt="CCCD" class="img-thumbnail mb-3" style="max-width: 200px; max-height: 200px;" />
+                                }
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Số giấy phép lái xe B2:</th>
+                            <td>@Model.SoGplxB2</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                @if (Model.HinhGplxb2 != null)
+                                {
+                                    <img src="~/images/AnhGPLX/@Model.HinhGplxb2" alt="GPLX" class="img-thumbnail mb-3" style="max-width: 200px; max-height: 200px;" />
+                                }
+                                else
+                                {
+                                    <img src="~/images/AnhGPLX/gplxDefault.png" alt="GPLX" class="img-thumbnail mb-3" style="max-width: 200px; max-height: 200px;" />
+                                }
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- Thông tin xe được thuê -->
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    Thông tin xe được thuê
+                </div>
+                <div class="card-body text-center">
+                    <img src="~/images/Xe/@Model.HinhXe" alt="Car Image" class="img-fluid img-thumbnail mb-3" style="max-width: 100%; height: auto;">
+                    <table class="table table-striped">
+                        <tr>
+                            <th>Mẫu xe:</th>
+                            <td>@Model.TenMauXe</td>
+                        </tr>
+                        <tr>
+                            <th>Biển số xe:</th>
+                            <td>@Model.BienSoXe</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- Thông tin yêu cầu thuê xe -->
+        <div class="col-md-12">
+            <div class="card mb-4">
+                <div class="card-header">
+                    Thông tin yêu cầu thuê xe
+                </div>
+                <div class="card-body">
+                    <table class="table table-striped">
+                        <tr>
+                            <th>Thời gian thuê xe:</th>
+                            <td>@Model.ThoiGianThue</td>
+                        </tr>
+                        <tr>
+                            <th>Địa điểm nhận xe:</th>
+                            <td>@Model.DiaDiemNhanXe</td>
+                        </tr>
+                        <tr>
+                            <th>Bảo hiểm thuê xe:</th>
+                            <td>@Model.Baohiemthuexe đ</td>
+                        </tr>
+                        <tr>
+                            <th>Hình thức thanh toán:</th>
+                            <td>@Model.httt</td>
+                        </tr>
+                        <tr>
+                            <th>Thành tiền:</th>
+                            <td>@Model.TongTienThue đ</td>
+                        </tr>
+                        <tr>
+                            <th>Số tiền cần trả:</th>
+                            <td>@Model.Sotiencantra đ</td>
+                        </tr>
+                    </table>
+                    @if (Model.httt == "Tiền mặt")
+                    {
+                        <form asp-action="XacNhanThanhToan" method="post">
+                            <input type="hidden" asp-for="@Model.MaYc" />
+                            <button id="xacnhanthanhtoan" class="btn btn-primary">Xác nhận thanh toán tiền cọc</button>
+                        </form>                    
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <a asp-action="Danhsachxacnhantiencoc" asp-controller="TienCoc" asp-area="Admin" class="btn btn-secondary">Trở về danh sách</a>
+        </div>
+    </div>
+</div>

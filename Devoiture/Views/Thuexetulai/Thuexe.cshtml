@@ -128,9 +128,9 @@
                 if (!isNaN(pickupDate) && !isNaN(dropDate) && dropDate > pickupDate) {
                     var timeDiff = Math.abs(dropDate.getTime() - pickupDate.getTime());
                     var days = Math.ceil(timeDiff / (1000 * 3600 * 24)); // Số ngày giữa hai ngày
-                    var dongiathue = (giathue * days).toFixed(2);
-                    var baohiemthuexe = (dongiathue * 0.09843205574912892).toFixed(2);
-                    var tongtienthue = (parseFloat(dongiathue) + parseFloat(baohiemthuexe)).toFixed(2);
+                    var dongiathue = Math.round(giathue * days);
+                    var baohiemthuexe = Math.round(dongiathue * 0.09843205574912892);
+                    var tongtienthue = dongiathue + baohiemthuexe;
 
                     $('#rentalPrice').val(dongiathue);
                     $('#insurancePrice').val(baohiemthuexe);

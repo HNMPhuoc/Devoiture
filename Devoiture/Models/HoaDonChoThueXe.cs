@@ -5,7 +5,7 @@ namespace Devoiture.Models;
 
 public partial class HoaDonChoThueXe
 {
-    public int MaHdct { get; set; }
+    public string MaHdct { get; set; } = null!;
 
     public int MaYc { get; set; }
 

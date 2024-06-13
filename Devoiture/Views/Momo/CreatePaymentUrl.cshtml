@@ -1,0 +1,39 @@
+﻿@model Devoiture.Models.Momo.MomoExecuteResponseModel
+
+@{
+    ViewData["Title"] = "Xác nhận thanh toán";
+    var postUrl = "tich-hop-thanh-toan-momo-voi-asp-net-core-7d5e4hP";
+}
+
+<div class="container py-5">
+    <h1 class="display-4 text-uppercase text-center mb-5">Xác nhận thanh toán</h1>
+    <div class="row justify-content-center">
+        <div class="col-lg-8 mb-2">
+            <div class="contact-form bg-white mb-4 shadow p-4 rounded">
+                <form asp-action="CreatePaymentUrl" asp-controller="Momo" method="post">
+                    <div class="form-group">
+                        <label for="fullName" class="font-weight-bold">Họ và tên:</label>
+                        <input type="text" id="fullName" class="form-control p-4" value="@Model.FullName" readonly />
+                    </div>
+                    <div class="form-group">
+                        <label for="amount" class="font-weight-bold">Số tiền cọc cần thanh toán:</label>
+                        <input type="text" id="amount" class="form-control p-4" value="@Model.Amount" readonly />
+                    </div>
+                    <div class="form-group">
+                        <label for="orderInfo" class="font-weight-bold">Nội dung thanh toán:</label>
+                        <input type="text" id="orderInfo" class="form-control p-4" value="@Model.OrderInfo" readonly />
+                    </div>
+                    <input type="hidden" asp-for="OrderId" />
+                    <input type="hidden" asp-for="Mayc"/>
+                    <input type="hidden" asp-for="OrderInfo" />
+                    <input type="hidden" asp-for="Amount" />
+                    <input type="hidden" asp-for="FullName" />
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary py-3 px-5">Xác nhận thanh toán</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+

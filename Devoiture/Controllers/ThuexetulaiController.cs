@@ -12,6 +12,8 @@ using System;
 using System.Linq;
 using System.ComponentModel.DataAnnotations;
 using Humanizer;
+using System.Security.Policy;
+using System.Security.Claims;
 
 namespace Devoiture.Controllers
 {
@@ -92,7 +94,7 @@ namespace Devoiture.Controllers
                 return View(viewModel);
             }
             var ngaythue = _context.Yeucauthuexes
-                .Where(y => y.Biensoxe == biensoxe && y.Matt == 2)
+                .Where(y => y.Biensoxe == biensoxe && (y.Matt == 2 || y.Matt == 4 || y.Matt == 5))
                 .Where(y => (model.Ngaynhanxe >= y.Ngaynhanxe && model.Ngaynhanxe <= y.Ngaytraxe) ||
                             (model.Ngaytraxe >= y.Ngaynhanxe && model.Ngaytraxe <= y.Ngaytraxe))
                 .ToList();
@@ -129,11 +131,12 @@ namespace Devoiture.Controllers
                 Baohiemthuexe = model.Baohiemthuexe,
                 Dongiathue = model.Dongiathue,
                 Tongtienthue = model.Tongtienthue,
+                Sotiencantra = model.Tongtienthue
             };
             _context.Yeucauthuexes.Add(yeucauthuexe);
             _context.SaveChanges();
             TempData["success"] = "Đặt yêu cầu thuê xe thành công! Vui lòng chờ xác nhận của chủ xe.";
-            var expiry = DateTime.Now.AddDays(1);
+            var expiry = DateTime.Now.AddMinutes(1);
             var maYc = yeucauthuexe.MaYc;
             var token = TokenHelper.GenerateToken(expiry, maYc);
             var url = Url.Action("ValidateEmailLink", "Thuexetulai", new { token }, Request.Scheme);
@@ -149,25 +152,27 @@ namespace Devoiture.Controllers
             {
                 return RedirectToAction("Index", "Home");
             }
-
-            // Trích xuất mã yêu cầu từ token
+            var currentUserEmail = HttpContext.Session.GetString(MySettings.ACCOUNT_KEY);
             int? maYc = TokenHelper.GetMaYcFromToken(token);
-            if (maYc == null)
+            var yeuCau = _context.Yeucauthuexes.FirstOrDefault(y => y.MaYc == maYc);
+            if (yeuCau == null)
             {
                 return RedirectToAction("Error", "Home");
             }
-            if (HttpContext.Session.GetString(MySettings.ACCOUNT_KEY) == null)
+            if (currentUserEmail == null)
             {
                 HttpContext.Session.SetInt32("MaYcFromToken", maYc.Value);
                 return RedirectToAction("Dangnhap", "Khachhang", new { returnUrl = Url.Action("Chitietyc", new { mayc = maYc }) });
             }
-            return RedirectToAction("Chitietyc", new { mayc = maYc });
-            return RedirectToAction("Chitietyc", new { mayc = maYc });
+            if (currentUserEmail == yeuCau.Chuxe)
+            {
+                return RedirectToAction("Chitietyc", new { mayc = maYc });
+            }
+            return RedirectToAction("Dangnhap", "Khachhang", new { returnUrl = Url.Action("Chitietyc", new { mayc = maYc }) });
         }
         public IActionResult Danhsachyeucauthuexe()
         {
             var kh = HttpContext.User.Claims.SingleOrDefault(p => p.Type == MySettings.ACCOUNT_KEY)?.Value;
-
             if (string.IsNullOrEmpty(kh))
             {
                 return BadRequest("Email tài khoản là bắt buộc");
@@ -235,8 +240,26 @@ namespace Devoiture.Controllers
             {
                 return NotFound();
             }
+            if(yeuCau.Ngaynhanxe < DateTime.Now)
+            {
+                TempData["error"] = "Yêu cầu thuê xe đã quá hạn. Quý khách không thể chấp nhận yêu cầu này";
+                return RedirectToAction("Chitietyc", new {mayc = yeuCau.MaYc});
+            }
             yeuCau.Matt = 2;
             _context.SaveChanges();
+            var hoTenNguoiThue = _context.Taikhoans.FirstOrDefault(tk => tk.Email == yeuCau.Nguoithue)?.HoTen;
+            string emailContent = "";
+            if (yeuCau.Maht == 1)
+            {
+                emailContent = System.IO.File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "MessageEmail/DepositPaymentNotification.html"));
+            }
+            else if (yeuCau.Maht == 2)
+            {
+                emailContent = System.IO.File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "MessageEmail/MomoPaymentNotification.html"));
+            }
+            emailContent = emailContent.Replace("{{UserName}}", hoTenNguoiThue ?? "khách hàng");
+            emailContent = emailContent.Replace("{{CarDetails}}", yeuCau.Biensoxe);
+            _emailsender.SendMail(yeuCau.Nguoithue, "Yêu cầu đặt xe Devoiture", emailContent);
             var biensoxe = yeuCau.Biensoxe;
             var ngaynhanxe = yeuCau.Ngaynhanxe;
             var ngaytraxe = yeuCau.Ngaytraxe;
@@ -245,9 +268,15 @@ namespace Devoiture.Controllers
                 .ToList();
             foreach (var yc in yeuCauKhac)
             {
-                if (yc.Ngaynhanxe >= ngaynhanxe || yc.Ngaytraxe <= ngaytraxe)
+                if ((yc.Ngaynhanxe >= ngaynhanxe && yc.Ngaynhanxe <= ngaytraxe) ||
+                    (yc.Ngaytraxe >= ngaynhanxe && yc.Ngaytraxe <= ngaytraxe))
                 {
                     yc.Matt = 3;
+                    var rejectionHtmlContent = System.IO.File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "MessageEmail/RejectionNotification.html"));
+                    rejectionHtmlContent = rejectionHtmlContent.Replace("{{UserName}}", yc.Nguoithue);
+                    rejectionHtmlContent = rejectionHtmlContent.Replace("{{CarDetails}}", yc.Biensoxe);
+
+                    _emailsender.SendMail(yc.Nguoithue, "Yêu cầu thuê xe Devoiture bị từ chối", rejectionHtmlContent);
                 }
             }
             _context.SaveChanges();
@@ -267,7 +296,6 @@ namespace Devoiture.Controllers
             {
                 return NotFound();
             }
-
             yeuCau.Matt = 3;
             _context.SaveChanges();
             var kh = HttpContext.User.Claims.SingleOrDefault(p => p.Type == MySettings.ACCOUNT_KEY)?.Value;
@@ -277,7 +305,208 @@ namespace Devoiture.Controllers
                     .Count(y => y.Chuxe == kh && y.Matt == 1);
                 HttpContext.Session.SetInt32(MySettings.ACCOUNT_REQUEST, soyc);
             }
+            var rejectionHtmlContent = System.IO.File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "MessageEmail/RejectionNotification.html"));
+            rejectionHtmlContent = rejectionHtmlContent.Replace("{{UserName}}", yeuCau.Nguoithue);
+            rejectionHtmlContent = rejectionHtmlContent.Replace("{{CarDetails}}", yeuCau.Biensoxe);
+            _emailsender.SendMail(yeuCau.Nguoithue, "Yêu cầu thuê xe Devoiture bị từ chối", rejectionHtmlContent);
             return RedirectToAction("Danhsachyeucauthuexe");
         }
-    }   
+        public IActionResult DanhsachThuexeCanThanhToanTienCoc()
+        {
+            var userEmail = HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+            if (string.IsNullOrEmpty(userEmail))
+            {
+                return RedirectToAction("Dangnhap", "Khachhang");
+            }
+            var thuexes = (from yc in _context.Yeucauthuexes
+                           join xe in _context.Xes on yc.Biensoxe equals xe.Biensoxe
+                           join chuxe in _context.Taikhoans on yc.Chuxe equals chuxe.Email
+                           join trangthai in _context.TrangthaiThuexes on yc.Matt equals trangthai.Matt
+                           join ht in _context.Hinhthucthanhtoans on yc.Maht equals ht.MaHt
+                           where (yc.Matt != 1 && yc.Matt != 3 && yc.Matt != 6) && yc.Nguoithue == userEmail
+                           select new ThuexeThanhToanTienCoc_VM
+                           {
+                               MaYc = yc.MaYc,
+                               MauXe = xe.MaMxNavigation.TenMx,
+                               HinhXe = xe.Hinhanh,
+                               HoTenChuXe = chuxe.HoTen,
+                               NgayNhanXe = yc.Ngaynhanxe,
+                               NgayTraXe = yc.Ngaytraxe,
+                               TrangThaiThue = trangthai.Tentrangthai,
+                               Maht = ht.MaHt
+                           }).ToList();
+            var chothuexes = (from yc in _context.Yeucauthuexes
+                              join xe in _context.Xes on yc.Biensoxe equals xe.Biensoxe
+                              join nguoithue in _context.Taikhoans on yc.Nguoithue equals nguoithue.Email
+                              join trangthai in _context.TrangthaiThuexes on yc.Matt equals trangthai.Matt
+                              join ht in _context.Hinhthucthanhtoans on yc.Maht equals ht.MaHt
+                              where (yc.Matt != 1 && yc.Matt != 3 && yc.Matt != 6) && yc.Chuxe == userEmail
+                              select new Chothuexe_VM
+                              {
+                                  MaYc = yc.MaYc,
+                                  MauXe = xe.MaMxNavigation.TenMx,
+                                  HinhXe = xe.Hinhanh,
+                                  HoTenNguoiThue = nguoithue.HoTen,
+                                  NgayNhanXe = yc.Ngaynhanxe,
+                                  NgayTraXe = yc.Ngaytraxe,
+                                  TrangThaiThue = trangthai.Tentrangthai,
+                                  Maht = ht.MaHt
+                              }).ToList();
+            var viewModel = new DanhsachThuexeViewModel
+            {
+                Thuexes = thuexes,
+                ChoThuexes = chothuexes
+            };
+            return View(viewModel);
+        }
+        public IActionResult ChitietycThanhtoanTienCoc(int mayc)
+        {
+            var chitietyc = (from yc in _context.Yeucauthuexes
+                             join xe in _context.Xes on yc.Biensoxe equals xe.Biensoxe
+                             join chuxe in _context.Taikhoans on yc.Chuxe equals chuxe.Email
+                             join trangthai in _context.TrangthaiThuexes on yc.Matt equals trangthai.Matt
+                             join ht in _context.Hinhthucthanhtoans on yc.Maht equals ht.MaHt
+                             where yc.MaYc == mayc
+                             select new ChitietycThanhtoan_VM
+                             {
+                                 MaYc = yc.MaYc,
+                                 HinhXe = xe.Hinhanh,
+                                 TenMauXe = xe.MaMxNavigation.TenMx,
+                                 Ngayyeucau = yc.Ngayyeucau.ToString("dd/MM/yyyy HH:mm"),
+                                 ThoiGianThue = $"{yc.Ngaynhanxe.ToString("dd/MM/yyyy")} - {yc.Ngaytraxe.ToString("dd/MM/yyyy")}",
+                                 Chuxe = chuxe.Email,
+                                 DiaDiemNhanXe = yc.Diadiemnhanxe,
+                                 BienSoXe = yc.Biensoxe,
+                                 Trangthaiyc = trangthai.Tentrangthai,
+                                 TongTienThue = yc.Tongtienthue,
+                                 Sotiencantra = yc.Sotiencantra,
+                                 Baohiemthuexe = yc.Baohiemthuexe,
+                                 HoTen = chuxe.HoTen,
+                                 Sdt = chuxe.Sdt,
+                                 SoGplxB2 = chuxe.SoGplxB2,
+                                 HinhGplxb2 = chuxe.HinhGplxb2,
+                                 SoCccd = chuxe.SoCccd,
+                                 HinhCccd = chuxe.HinhCccd,
+                                 httt = ht.TenHt
+                             }).FirstOrDefault();
+            if (chitietyc == null)
+            {
+                return NotFound();
+            }
+            return View(chitietyc);
+        }
+        public IActionResult Chitietycdathuexe(int mayc)
+        {
+            var chitietyc = (from yc in _context.Yeucauthuexes
+                             join xe in _context.Xes on yc.Biensoxe equals xe.Biensoxe
+                             join chuxe in _context.Taikhoans on yc.Chuxe equals chuxe.Email
+                             join trangthai in _context.TrangthaiThuexes on yc.Matt equals trangthai.Matt
+                             join ht in _context.Hinhthucthanhtoans on yc.Maht equals ht.MaHt
+                             where yc.MaYc == mayc
+                             select new ChitietycThanhtoan_VM
+                             {
+                                 MaYc = yc.MaYc,
+                                 HinhXe = xe.Hinhanh,
+                                 TenMauXe = xe.MaMxNavigation.TenMx,
+                                 Ngayyeucau = yc.Ngayyeucau.ToString("dd/MM/yyyy HH:mm"),
+                                 ThoiGianThue = $"{yc.Ngaynhanxe.ToString("dd/MM/yyyy")} - {yc.Ngaytraxe.ToString("dd/MM/yyyy")}",
+                                 Chuxe = chuxe.Email,
+                                 DiaDiemNhanXe = yc.Diadiemnhanxe,
+                                 BienSoXe = yc.Biensoxe,
+                                 Trangthaiyc = trangthai.Tentrangthai,
+                                 TongTienThue = yc.Tongtienthue,
+                                 Sotiencantra = yc.Sotiencantra,
+                                 Baohiemthuexe = yc.Baohiemthuexe,
+                                 HoTen = chuxe.HoTen,
+                                 Sdt = chuxe.Sdt,
+                                 SoGplxB2 = chuxe.SoGplxB2,
+                                 HinhGplxb2 = chuxe.HinhGplxb2,
+                                 SoCccd = chuxe.SoCccd,
+                                 HinhCccd = chuxe.HinhCccd,
+                                 httt = ht.TenHt
+                             }).FirstOrDefault();
+            if (chitietyc == null)
+            {
+                return NotFound();
+            }
+            return View(chitietyc);
+        }
+        [HttpPost]
+        public IActionResult Nhanxe(int mayc)
+        {
+            var yeuCau = _context.Yeucauthuexes.FirstOrDefault(y => y.MaYc == mayc);
+            if (yeuCau == null)
+            {
+                return NotFound();
+            }
+            yeuCau.Matt = 5;
+            _context.Update(yeuCau);
+            _context.SaveChanges();
+            TempData["success"] = "Đã nhận xe thành công";
+            return RedirectToAction("DanhsachThuexeCanThanhToanTienCoc", "Thuexetulai");
+        }
+        public IActionResult Chitietycdanhanxe(int mayc)
+        {
+            var chitietyc = (from yc in _context.Yeucauthuexes
+                             join xe in _context.Xes on yc.Biensoxe equals xe.Biensoxe
+                             join chuxe in _context.Taikhoans on yc.Chuxe equals chuxe.Email
+                             join trangthai in _context.TrangthaiThuexes on yc.Matt equals trangthai.Matt
+                             join ht in _context.Hinhthucthanhtoans on yc.Maht equals ht.MaHt
+                             where yc.MaYc == mayc
+                             select new ChitietycThanhtoan_VM
+                             {
+                                 MaYc = yc.MaYc,
+                                 HinhXe = xe.Hinhanh,
+                                 TenMauXe = xe.MaMxNavigation.TenMx,
+                                 Ngayyeucau = yc.Ngayyeucau.ToString("dd/MM/yyyy HH:mm"),
+                                 ThoiGianThue = $"{yc.Ngaynhanxe.ToString("dd/MM/yyyy")} - {yc.Ngaytraxe.ToString("dd/MM/yyyy")}",
+                                 Chuxe = chuxe.Email,
+                                 DiaDiemNhanXe = yc.Diadiemnhanxe,
+                                 BienSoXe = yc.Biensoxe,
+                                 Trangthaiyc = trangthai.Tentrangthai,
+                                 TongTienThue = yc.Tongtienthue,
+                                 Sotiencantra = yc.Sotiencantra,
+                                 Baohiemthuexe = yc.Baohiemthuexe,
+                                 HoTen = chuxe.HoTen,
+                                 Sdt = chuxe.Sdt,
+                                 SoGplxB2 = chuxe.SoGplxB2,
+                                 HinhGplxb2 = chuxe.HinhGplxb2,
+                                 SoCccd = chuxe.SoCccd,
+                                 HinhCccd = chuxe.HinhCccd,
+                                 httt = ht.TenHt
+                             }).FirstOrDefault();
+            if (chitietyc == null)
+            {
+                return NotFound();
+            }
+            return View(chitietyc);
+        }
+        [HttpPost]
+        public IActionResult Hoanthanhgiaodich(int mayc)
+        {
+            var yeuCau = _context.Yeucauthuexes.FirstOrDefault(y => y.MaYc == mayc);
+            if (yeuCau == null)
+            {
+                return NotFound();
+            }
+            yeuCau.Matt = 6;
+            yeuCau.Sotiencantra = 0;
+            _context.Update(yeuCau);
+            var hoaDonThueXe = _context.HoadonThuexes.FirstOrDefault(h => h.MaYc == mayc);
+            if (hoaDonThueXe != null)
+            {
+                hoaDonThueXe.Sotiencantra = 0;
+                _context.HoadonThuexes.Update(hoaDonThueXe);
+            }
+            var hoaDonchothuexe = _context.HoaDonChoThueXes.FirstOrDefault(h => h.MaYc == mayc);
+            if (hoaDonchothuexe != null)
+            {
+                hoaDonchothuexe.Tongtiennhanduoc = yeuCau.Tongtienthue;
+                _context.HoaDonChoThueXes.Update(hoaDonchothuexe);
+            }
+            _context.SaveChanges();
+            TempData["success"] = "Hoàn thành giao dịch";
+            return RedirectToAction("DanhsachThuexeCanThanhToanTienCoc", "Thuexetulai");
+        }
+    }
 }

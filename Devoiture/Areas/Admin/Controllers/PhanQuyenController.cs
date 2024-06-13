@@ -124,7 +124,8 @@ namespace Devoiture.Areas.Admin.Controllers
                     new Website { TenWebsite = "Chuyển quyền tài khoản", MaQuyen = quyenMoi.MaQuyen, Quyentruycap = false, Create = false, Read = false, Update = false, Delete = false },
                     new Website { TenWebsite = "Đăng kí cho thuê xe tự lái", MaQuyen = quyenMoi.MaQuyen, Quyentruycap = false, Create = false, Read = false, Update = false, Delete = false },
                     new Website { TenWebsite = "Thuê xe tự lái", MaQuyen = quyenMoi.MaQuyen, Quyentruycap = false, Create = false, Read = false, Update = false, Delete = false },
-                    new Website { TenWebsite = "Đổi tên quyền", MaQuyen = quyenMoi.MaQuyen, Quyentruycap = false, Create = false, Read = false, Update = false, Delete = false }
+                    new Website { TenWebsite = "Đổi tên quyền", MaQuyen = quyenMoi.MaQuyen, Quyentruycap = false, Create = false, Read = false, Update = false, Delete = false },
+                    new Website { TenWebsite = "Quản lí yêu cầu thuê xe", MaQuyen = quyenMoi.MaQuyen, Quyentruycap = false, Create = false, Read = false, Update = false, Delete = false },
                 };
                 _context.Websites.AddRange(websites);
                 _context.SaveChanges();

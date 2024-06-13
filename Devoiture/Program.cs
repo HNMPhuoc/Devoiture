@@ -2,6 +2,8 @@
 using Devoiture.Helpers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Devoiture.Models.Momo;
+using Devoiture.Service;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,6 +39,9 @@ builder.Services.AddControllersWithViews();
 builder.Services.Configure<SMTPConfig>(builder.Configuration.GetSection("SMTPConfig"));
 builder.Services.AddScoped<EmailSender>();
 
+builder.Services.Configure<MomoOptionModel>(builder.Configuration.GetSection("MomoAPI"));
+builder.Services.AddScoped<IMomoService,MomoService>();
+builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
 

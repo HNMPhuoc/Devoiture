@@ -5,7 +5,7 @@ namespace Devoiture.Models;
 
 public partial class HoadonThuexe
 {
-    public int MaHd { get; set; }
+    public string MaHd { get; set; } = null!;
 
     public int MaYc { get; set; }
 
@@ -25,7 +25,7 @@ public partial class HoadonThuexe
 
     public double TongTienThue { get; set; }
 
-    public double Dathanhtoan { get; set; }
+    public double Sotiencantra { get; set; }
 
     public virtual Yeucauthuexe MaYcNavigation { get; set; } = null!;
 }
