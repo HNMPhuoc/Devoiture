@@ -1,4 +1,6 @@
-﻿namespace Devoiture.ViewModel
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+
+namespace Devoiture.ViewModel
 {
     public class DanhsachxeKH_VM
     {
@@ -22,5 +24,7 @@
 
         public string Tenloai {  get; set; }
         public bool Hide {  get; set; }
+        public int makv { get; set; }
+        public List<SelectListItem>? KhuVucList { get; set; }
     }
 }

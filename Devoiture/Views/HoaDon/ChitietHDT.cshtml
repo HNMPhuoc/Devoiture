@@ -1,0 +1,54 @@
+﻿@model Devoiture.ViewModel.ChitietHDTX
+
+@{
+    ViewData["Title"] = "Chi tiết hóa đơn thuê xe";
+}
+
+<div class="container my-5">
+    <h1 class="text-center mb-4">@ViewData["Title"]</h1>
+
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">Thông tin hóa đơn</h4>
+        </div>
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-3">Mã hóa đơn</dt>
+                <dd class="col-sm-9">@Model.MaHd</dd>
+
+                <dt class="col-sm-3">Mã yêu cầu</dt>
+                <dd class="col-sm-9">@Model.MaYc</dd>
+
+                <dt class="col-sm-3">Email</dt>
+                <dd class="col-sm-9">@Model.Email</dd>
+
+                <dt class="col-sm-3">Biển số xe</dt>
+                <dd class="col-sm-9">@Model.Biensoxe</dd>
+
+                <dt class="col-sm-3">Ngày lập hóa đơn</dt>
+                <dd class="col-sm-9">@Model.NgaylapHd.ToShortDateString()</dd>
+
+                <dt class="col-sm-3">Họ tên</dt>
+                <dd class="col-sm-9">@Model.HoTen</dd>
+
+                <dt class="col-sm-3">Bảo hiểm thuê xe</dt>
+                <dd class="col-sm-9">@String.Format("{0:N0}", @Model.Baohiemthuexe) đ</dd>
+
+                <dt class="col-sm-3">Số điện thoại</dt>
+                <dd class="col-sm-9">@Model.Sdt</dd>
+
+                <dt class="col-sm-3">Tiền đặt cọc</dt>
+                <dd class="col-sm-9">@String.Format("{0:N0}", @Model.Tiendatcoc) đ</dd>
+
+                <dt class="col-sm-3">Tổng tiền thuê</dt>
+                <dd class="col-sm-9">@String.Format("{0:N0}", @Model.TongTienThue) đ</dd>
+
+                <dt class="col-sm-3">Số tiền cần trả</dt>
+                <dd class="col-sm-9">@String.Format("{0:N0}", @Model.Sotiencantra) đ</dd>
+            </dl>
+        </div>
+        <div class="card-footer text-right">
+            <a href="@Url.Action("Index", "HoaDon")" class="btn btn-secondary">Back to List</a>
+        </div>
+    </div>
+</div>

@@ -4,6 +4,7 @@ using Devoiture.ViewModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 using System.Security.Claims;
 
 namespace Devoiture.Controllers
@@ -59,6 +60,43 @@ namespace Devoiture.Controllers
             };
 
             return View(viewModel);
+        }
+        public IActionResult ChitietHDT(string mahd)
+        {
+            var chitiethd = (from hd in _context.HoadonThuexes
+                             where hd.MaHd == mahd
+                select new ChitietHDTX 
+                {
+                    MaHd = mahd,
+                    MaYc = hd.MaYc,
+                    Email = hd.Email,
+                    Biensoxe = hd.Biensoxe,
+                    NgaylapHd = hd.NgaylapHd,
+                    HoTen = hd.HoTen,
+                    Baohiemthuexe = hd.Baohiemthuexe,
+                    Sdt = hd.Sdt,
+                    Tiendatcoc = hd.Tiendatcoc,
+                    TongTienThue = hd.TongTienThue,
+                    Sotiencantra = hd.Sotiencantra
+                }).FirstOrDefault();
+            return View(chitiethd);
+        }
+        public IActionResult ChitietHDCT(string mahd)
+        {
+            var chitiethd = (from hd in _context.HoaDonChoThueXes
+                             where hd.MaHdct == mahd
+                             select new ChitietHDCT
+                             {
+                                 MaHdct = mahd,
+                                 MaYc = hd.MaYc,
+                                 Email = hd.Email,
+                                 Biensx = hd.Biensx,
+                                 NglapHd = hd.NglapHd,
+                                 Hoten = hd.Hoten,
+                                 Sdt = hd.Sdt,
+                                 Tongtiennhanduoc = hd.Tongtiennhanduoc
+                             }).FirstOrDefault();
+            return View(chitiethd);
         }
     }
 }

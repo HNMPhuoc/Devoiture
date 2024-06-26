@@ -240,7 +240,7 @@ namespace Devoiture.Controllers
             {
                 return NotFound();
             }
-            if(yeuCau.Ngaynhanxe < DateTime.Now)
+            if(yeuCau.Ngaynhanxe < DateTime.Today)
             {
                 TempData["error"] = "Yêu cầu thuê xe đã quá hạn. Quý khách không thể chấp nhận yêu cầu này";
                 return RedirectToAction("Chitietyc", new {mayc = yeuCau.MaYc});

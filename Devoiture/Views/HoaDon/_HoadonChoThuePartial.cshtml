@@ -9,6 +9,7 @@
                 <th>Ngày Lập Hóa Đơn</th>
                 <th>Tên Khách Hàng</th>
                 <th>Tổng Tiền</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -20,6 +21,9 @@
                     <td>@item.NgaylapHd.ToString("dd/MM/yyyy")</td>
                     <td>@item.TenKhachHang</td>
                     <td>@item.TongTien đ</td>
+                    <td>
+                        <a asp-action="ChitietHDCT" asp-controller="HoaDon" asp-route-mahd="@item.MaHd" class="btn btn-info btn-sm">View</a>
+                    </td>
                 </tr>
             }
         </tbody>
